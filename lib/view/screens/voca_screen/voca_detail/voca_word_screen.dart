@@ -1,22 +1,35 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jwh_01/view/widgets/category_voca.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jwh_01/view/widgets/word_tile.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
-class ThemeDetailScreen extends StatelessWidget {
-  const ThemeDetailScreen({super.key});
+class VocaWordScreen extends ConsumerWidget {
+  final String docId;
+  final String title;
+  const VocaWordScreen({required this.title, required this.docId, super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final wordQuery =
         FirebaseFirestore.instance
             .collection('words')
             .doc('theme')
             .collection('theme')
+            .doc(docId)
+            .collection(docId)
             .snapshots();
     return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        actionsPadding: EdgeInsets.only(right: 5.w),
+        title: Text(title),
+      ),
       body: StreamBuilder(
         stream: wordQuery,
         builder: (context, snapshot) {
@@ -30,11 +43,8 @@ class ThemeDetailScreen extends StatelessWidget {
           return ListView.builder(
             itemCount: docs.length,
             itemBuilder: (context, index) {
-              DocumentSnapshot doc = snapshot.data!.docs[index];
-              final String docId = doc.id;
               final data = docs[index].data();
-
-              return CategoryVoca(data: data, docId: docId);
+              return WordTile(data: data);
             },
           );
         },

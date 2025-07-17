@@ -1,16 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jwh_01/view/screens/voca_screen/voca_detail/voca_word_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CategoryVoca extends StatelessWidget {
   final Map<String, dynamic> data;
-  const CategoryVoca({super.key, required this.data});
+  final String docId;
+  const CategoryVoca({super.key, required this.data, required this.docId});
+
+  void _onTapCategory(BuildContext context) {
+    // Navigate to the word details screen with the document ID
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder:
+            (context) => VocaWordScreen(docId: docId, title: data['title']),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => _onTapCategory(context),
 
       child: Container(
         height: 10.h,
@@ -77,7 +89,7 @@ class CategoryVoca extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  data['name'] ?? '',
+                  data['title'] ?? '',
                   style: TextStyle(
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w300,

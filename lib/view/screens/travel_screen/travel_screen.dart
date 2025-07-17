@@ -7,9 +7,14 @@ import 'package:jwh_01/view/widgets/category_travel.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class TravelScreen extends StatelessWidget {
+class TravelScreen extends StatefulWidget {
   const TravelScreen({super.key});
 
+  @override
+  State<TravelScreen> createState() => _TravelScreenState();
+}
+
+class _TravelScreenState extends State<TravelScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -61,7 +66,7 @@ class TravelScreen extends StatelessWidget {
                         myTitle: "교통편",
                         myIcon: FontAwesomeIcons.train,
                         myColor: Colors.grey,
-                        category: "vehicle",
+                        category: "transportation",
                       ),
                       CategoryTravel(
                         myTitle: "쇼핑할 때",

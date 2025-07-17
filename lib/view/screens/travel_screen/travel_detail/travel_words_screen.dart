@@ -9,9 +9,9 @@ import 'package:go_router/go_router.dart';
 import 'package:jwh_01/view/widgets/word_tile.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class WordsScreen extends ConsumerWidget {
+class TravelWordsScreen extends ConsumerWidget {
   final String myCategory;
-  const WordsScreen(this.myCategory, {super.key});
+  const TravelWordsScreen(this.myCategory, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
