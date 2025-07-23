@@ -93,7 +93,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           Text(
                             "회원가입하기",
                             style: TextStyle(
-                              fontSize: 26.sp,
+                              fontSize: 24.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -106,7 +106,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         child: Column(
                           children: [
                             TextFormField(
-                              style: TextStyle(fontSize: 20.sp),
+                              style: TextStyle(fontSize: 18.sp),
                               decoration: InputDecoration(
                                 labelText: "이름",
                                 border: UnderlineInputBorder(
@@ -125,7 +125,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                             SizedBox(height: 5.h),
                             TextFormField(
-                              style: TextStyle(fontSize: 20.sp),
+                              style: TextStyle(fontSize: 18.sp),
                               decoration: InputDecoration(
                                 labelText: "이메일",
                                 border: UnderlineInputBorder(
@@ -147,7 +147,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             SizedBox(height: 5.h),
                             TextFormField(
                               controller: passwordController,
-                              style: TextStyle(fontSize: 20.sp),
+                              style: TextStyle(fontSize: 18.sp),
                               obscureText: _isObscure,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -193,47 +193,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                 _formData["password"] = newValue!;
                               },
                             ),
-                            SizedBox(height: 5.h),
-                            TextFormField(
-                              controller: confirmPasswordController,
-                              style: TextStyle(fontSize: 20.sp),
-                              obscureText: _isObscure,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              decoration: InputDecoration(
-                                labelText: "비밀번호확인",
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                suffixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: _changeObsure,
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child:
-                                            _isObscure
-                                                ? FaIcon(FontAwesomeIcons.eye)
-                                                : FaIcon(
-                                                  FontAwesomeIcons.eyeSlash,
-                                                ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return '비밀번호 확인을 입력하세요';
-                                }
-                                if (value != passwordController.text) {
-                                  return '비밀번호가 일치하지 않습니다';
-                                }
-                                return null;
-                              },
-                            ),
                           ],
                         ),
                       ),
@@ -258,7 +217,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             child: Text(
                               "로그인하기",
                               style: TextStyle(
-                                fontSize: 19.sp,
+                                fontSize: 18.sp,
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),

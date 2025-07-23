@@ -22,6 +22,7 @@ abstract final class AppTheme {
   static ThemeData light = FlexThemeData.light(
     // Using FlexColorScheme built-in FlexScheme enum based colors
     scheme: FlexScheme.bigStone,
+    textTheme: GoogleFonts.gamjaFlowerTextTheme(),
     // Component theme configurations for light mode.
     subThemesData: const FlexSubThemesData(
       interactionEffects: true,

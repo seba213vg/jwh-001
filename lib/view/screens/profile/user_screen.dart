@@ -120,7 +120,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                           Text(
                             data['name'],
                             style: TextStyle(
-                              fontSize: 25.sp,
+                              fontSize: 23.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -132,7 +132,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                         children: [
                           FaIcon(
                             FontAwesomeIcons.chevronRight,
-                            size: 20.sp,
+                            size: 18.sp,
                             color: Theme.of(context).colorScheme.primaryFixed,
                           ),
                         ],
@@ -143,7 +143,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
               ),
               SizedBox(height: 2.h),
               ListTile(
-                title: Text("알림받기", style: TextStyle(fontSize: 20.sp)),
+                title: Text("알림받기", style: TextStyle(fontSize: 18.sp)),
                 trailing: CupertinoSwitch(
                   value: ref.watch(UserVmProvider).value!.notification,
                   onChanged: (value) {
@@ -155,7 +155,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
               ),
 
               ListTile(
-                title: Text("볼륨조절", style: TextStyle(fontSize: 20.sp)),
+                title: Text("볼륨조절", style: TextStyle(fontSize: 18.sp)),
                 subtitle: Slider(
                   value: _volume,
                   min: 0.0,
@@ -179,7 +179,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
               ),
 
               ListTile(
-                title: Text("글자크기 조절", style: TextStyle(fontSize: 20.sp)),
+                title: Text("글자크기 조절", style: TextStyle(fontSize: 18.sp)),
                 subtitle: Slider(
                   value: _textsize,
                   min: 1.0,
@@ -202,20 +202,20 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                 ),
               ),
 
-              ListTile(title: Text("앱 정보", style: TextStyle(fontSize: 20.sp))),
+              ListTile(title: Text("앱 정보", style: TextStyle(fontSize: 18.sp))),
               ListTile(
                 onTap: () {
                   Navigator.of(
                     context,
                   ).push(MaterialPageRoute(builder: (_) => LicensePage()));
                 },
-                title: Text("오픈소스 라이선스", style: TextStyle(fontSize: 20.sp)),
+                title: Text("오픈소스 라이선스", style: TextStyle(fontSize: 18.sp)),
               ),
               ListTile(
                 title: Text(
                   "로그아웃",
                   style: TextStyle(
-                    fontSize: 20.sp,
+                    fontSize: 18.sp,
                     color: Theme.of(context).colorScheme.error,
                   ),
                 ),
@@ -231,7 +231,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                             child: Text(
                               "아니요",
                               style: TextStyle(
-                                fontSize: 20.sp,
+                                fontSize: 18.sp,
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
@@ -245,7 +245,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                             child: Text(
                               "네",
                               style: TextStyle(
-                                fontSize: 20.sp,
+                                fontSize: 18.sp,
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),

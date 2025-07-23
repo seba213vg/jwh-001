@@ -9,14 +9,20 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // 배경 투명
-      statusBarIconBrightness: Brightness.dark, // 아이콘은 어두운 색
-      systemNavigationBarColor: Colors.black, // 네비게이션 바 배경 어둡게
-      systemNavigationBarIconBrightness: Brightness.light, // 네비게이션 바 아이콘
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.black,
+      systemNavigationBarIconBrightness: Brightness.light,
     ),
   );
 

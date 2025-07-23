@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -27,7 +27,8 @@ class _TravelScreenState extends State<TravelScreen> {
                 floating: true,
                 pinned: true,
                 snap: true,
-                collapsedHeight: 8.h,
+                // toolbarHeight: math.max(8.h, kToolbarHeight),
+                // collapsedHeight: math.max(8.h, kToolbarHeight),
                 // centerTitle: true,
               ),
               SliverToBoxAdapter(
@@ -66,7 +67,7 @@ class _TravelScreenState extends State<TravelScreen> {
                         myTitle: "교통편",
                         myIcon: FontAwesomeIcons.train,
                         myColor: Colors.grey,
-                        category: "transportation",
+                        category: "transport",
                       ),
                       CategoryTravel(
                         myTitle: "쇼핑할 때",
@@ -91,6 +92,12 @@ class _TravelScreenState extends State<TravelScreen> {
                         myIcon: FontAwesomeIcons.mapLocation,
                         myColor: Colors.blue,
                         category: "attractive",
+                      ),
+                      CategoryTravel(
+                        myTitle: "숫자읽기",
+                        myIcon: FontAwesomeIcons.two,
+                        myColor: Colors.green,
+                        category: "number",
                       ),
                     ],
                   ),

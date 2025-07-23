@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jwh_01/view/screens/contents/contents_screen.dart';
-import 'package:jwh_01/view/screens/home_screen.dart';
+import 'package:jwh_01/view/screens/home/home_screen.dart';
 import 'package:jwh_01/view/screens/profile/user_screen.dart';
 import 'package:jwh_01/view/screens/travel_screen/travel_screen.dart';
 import 'package:jwh_01/view/screens/voca_screen/voca_screen.dart';

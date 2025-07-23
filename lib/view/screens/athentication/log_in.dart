@@ -109,7 +109,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                           Text(
                             "로그인하기",
                             style: TextStyle(
-                              fontSize: 26.sp,
+                              fontSize: 24.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -122,7 +122,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                         child: Column(
                           children: [
                             TextFormField(
-                              style: TextStyle(fontSize: 20.sp),
+                              style: TextStyle(fontSize: 18.sp),
                               decoration: InputDecoration(
                                 labelText: "Email",
                                 border: UnderlineInputBorder(
@@ -143,7 +143,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                             ),
                             SizedBox(height: 5.h),
                             TextFormField(
-                              style: TextStyle(fontSize: 20.sp),
+                              style: TextStyle(fontSize: 18.sp),
                               obscureText: _isObscure,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -202,7 +202,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                             child: Text(
                               "비밀번호 찾기",
                               style: TextStyle(
-                                fontSize: 19.sp,
+                                fontSize: 16.sp,
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
@@ -229,7 +229,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                             child: Text(
                               "회원가입하기",
                               style: TextStyle(
-                                fontSize: 19.sp,
+                                fontSize: 18.sp,
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),

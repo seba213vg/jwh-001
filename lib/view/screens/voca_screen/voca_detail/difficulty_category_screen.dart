@@ -1,27 +1,26 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
-import 'package:jwh_01/view/widgets/word_tile.dart';
+import 'package:jwh_01/view/widgets/category_voca.dart';
+import 'package:jwh_01/view/widgets/category_voca_difficulty.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class TravelWordsScreen extends ConsumerStatefulWidget {
+class DifficultyCategoryScreen extends StatefulWidget {
+  const DifficultyCategoryScreen({super.key, required this.myCategory});
+
   final String myCategory;
-  const TravelWordsScreen(this.myCategory, {super.key});
 
   @override
-  ConsumerState<TravelWordsScreen> createState() => _TravelWordsScreenState();
+  State<DifficultyCategoryScreen> createState() =>
+      _DifficultyCategoryScreenState();
 }
 
-class _TravelWordsScreenState extends ConsumerState<TravelWordsScreen> {
+class _DifficultyCategoryScreenState extends State<DifficultyCategoryScreen> {
   late ScrollController _scrollController;
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     _scrollController = ScrollController();
   }
@@ -36,7 +35,9 @@ class _TravelWordsScreenState extends ConsumerState<TravelWordsScreen> {
   Widget build(BuildContext context) {
     final wordQuery =
         FirebaseFirestore.instance
-            .collection('travel')
+            .collection('words')
+            .doc('difficulty')
+            .collection('difficulty')
             .doc(widget.myCategory)
             .collection(widget.myCategory)
             .snapshots();
@@ -60,12 +61,21 @@ class _TravelWordsScreenState extends ConsumerState<TravelWordsScreen> {
             controller: _scrollController,
             thumbVisibility: true,
             trackVisibility: true,
-            child: ListView.builder(
+            child: GridView.builder(
               controller: _scrollController,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 2.0,
+                crossAxisSpacing: 5.w,
+                mainAxisSpacing: 2.h,
+              ),
               itemCount: docs.length,
               itemBuilder: (context, index) {
+                DocumentSnapshot doc = snapshot.data!.docs[index];
+                final String docId = doc.id;
                 final data = docs[index].data();
-                return WordTile(data: data);
+
+                return CategoryVocaDifficulty(data: data, docId: docId);
               },
             ),
           );

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart'; // Toast 패키지 추가
 import 'package:jwh_01/common/my_button.dart';
 import 'package:jwh_01/model/auth_model.dart';
 import 'package:jwh_01/viewmodel/sign_up_vm.dart';
@@ -15,13 +16,28 @@ class ForgotPassword extends ConsumerWidget {
     print(email);
     if (email.isNotEmpty) {
       ref.read(SignUpVmProvider.notifier).sendPasswordResetEmail(email);
-      ScaffoldMessenger.of(
-        ref.context,
-      ).showSnackBar(SnackBar(content: Text('비밀번호 재설정 이메일이 전송되었습니다.')));
+
+      // SnackBar 대신 Toast 사용
+      Fluttertoast.showToast(
+        msg: "비밀번호 재설정 이메일이 전송되었습니다.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     } else {
-      ScaffoldMessenger.of(
-        ref.context,
-      ).showSnackBar(SnackBar(content: Text('이메일을 입력해주세요.')));
+      // SnackBar 대신 Toast 사용
+      Fluttertoast.showToast(
+        msg: "이메일을 입력해주세요.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
@@ -29,8 +45,13 @@ class ForgotPassword extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authstate = ref.watch(SignUpVmProvider);
     return GestureDetector(
-      onTap: () => Focus.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('비밀번호 재설정'),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -42,27 +63,23 @@ class ForgotPassword extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 5.h),
+                      SizedBox(height: 2.h),
 
-                      Row(
-                        children: [
-                          Text(
-                            "비밀번호 재설정",
-                            style: TextStyle(
-                              fontSize: 26.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        "이메일 주소를 입력하면 비밀번호 재설정 링크를 보내드립니다.",
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: Colors.grey[600],
+                        ),
                       ),
 
                       SizedBox(height: 4.h),
                       TextField(
                         controller: emailController,
-                        style: TextStyle(fontSize: 20.sp),
+                        style: TextStyle(fontSize: 18.sp),
                         decoration: InputDecoration(
                           labelText: "이메일",
-                          labelStyle: TextStyle(fontSize: 20.sp),
+                          labelStyle: TextStyle(fontSize: 18.sp),
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -73,7 +90,9 @@ class ForgotPassword extends ConsumerWidget {
                               emailController.text.trim(),
                               ref,
                             ),
-                        child: MyButton(text: "이메일보내기", isEnabled: true),
+                        child: Center(
+                          child: MyButton(text: "이메일보내기", isEnabled: true),
+                        ),
                       ),
                     ],
                   ),
