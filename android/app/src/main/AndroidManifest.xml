@@ -9,9 +9,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:label="jwh_01"
+        android:label="오미즈구다사이"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">
         
         <!-- WebView 미디어 설정 -->

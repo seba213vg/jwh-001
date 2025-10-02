@@ -89,44 +89,32 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                 onTap: _profileInfo,
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
-                  height: 12.h,
-                  width: double.infinity,
+                  height: 15.h,
+                  width: 90.w,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(width: 2.w),
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 4.h,
-                            backgroundColor:
-                                Theme.of(
-                                  context,
-                                ).colorScheme.secondaryContainer,
-                            child: Text(
-                              "dd",
-                              style: TextStyle(fontSize: 30.sp),
-                            ),
-                          ),
-                        ],
+                      CircleAvatar(
+                        radius: 4.h,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondaryContainer,
+                        child: Text("dd", style: TextStyle(fontSize: 30.sp)),
                       ),
                       SizedBox(width: 6.w),
-                      Column(
-                        children: [
-                          Text(
-                            data['name'],
-                            style: TextStyle(
-                              fontSize: 23.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        data['name'],
+                        style: TextStyle(
+                          fontSize: 23.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                      SizedBox(width: 43.w),
+                      SizedBox(width: 36.w),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -224,7 +212,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text("로그인 하시곘습니까?"),
+                        title: Text("로그아웃 하시곘습니까?"),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(),

@@ -76,10 +76,10 @@ class _TravelScreenState extends State<TravelScreen> {
                         category: "shopping",
                       ),
                       CategoryTravel(
-                        myTitle: "편의점에서",
+                        myTitle: "카페/편의점에서",
                         myIcon: FontAwesomeIcons.store,
                         myColor: Colors.pink,
-                        category: "convenient",
+                        category: "cafe",
                       ),
                       CategoryTravel(
                         myTitle: "호텔에서",

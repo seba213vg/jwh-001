@@ -14,7 +14,8 @@ class CategoryVoca extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder:
-            (context) => VocaWordScreen(docId: docId, title: data['title']),
+            (context) =>
+                VocaWordScreen(docId: docId, title: data['title'] ?? ''),
       ),
     );
   }

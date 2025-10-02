@@ -75,7 +75,11 @@ class _DifficultyCategoryScreenState extends State<DifficultyCategoryScreen> {
                 final String docId = doc.id;
                 final data = docs[index].data();
 
-                return CategoryVocaDifficulty(data: data, docId: docId);
+                return CategoryVocaDifficulty(
+                  data: data,
+                  docId: docId,
+                  category: widget.myCategory,
+                );
               },
             ),
           );

@@ -2,15 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jwh_01/view/screens/voca_screen/voca_detail/voca_word_screen.dart';
+import 'package:jwh_01/view/screens/voca_screen/voca_detail/voca_words_screen_difficulty.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CategoryVocaDifficulty extends StatelessWidget {
   final Map<String, dynamic> data;
   final String docId;
+  final String category;
   const CategoryVocaDifficulty({
     super.key,
     required this.data,
     required this.docId,
+    required this.category,
   });
 
   void _onTapCategory(BuildContext context) {
@@ -18,7 +21,11 @@ class CategoryVocaDifficulty extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder:
-            (context) => VocaWordScreen(docId: docId, title: data['title']),
+            (context) => VocaWordScreenforDifficulty(
+              docId: docId,
+              title: data['title'] ?? 'none',
+              category: category,
+            ),
       ),
     );
   }
@@ -96,7 +103,7 @@ class CategoryVocaDifficulty extends StatelessWidget {
                 alignment: Alignment.centerLeft,
 
                 child: Text(
-                  data['title'] ?? '',
+                  data['title'] ?? 'none',
                   style: TextStyle(
                     fontSize: 26.sp,
                     fontWeight: FontWeight.w300,

@@ -41,7 +41,7 @@ class MyApp extends ConsumerWidget {
           routerConfig: ref.watch(myRouterProvider),
           title: 'project_JWH',
           debugShowCheckedModeBanner: false,
-          themeMode: ThemeMode.system,
+          themeMode: ThemeMode.dark,
 
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,

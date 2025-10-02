@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jwh_01/repository/auth_repo.dart';
 import 'package:jwh_01/view/screens/home/dictionary_webview.dart';
+import 'package:jwh_01/view/screens/home/word_add_screen.dart';
 import 'package:jwh_01/view/widgets/word_tile.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -45,6 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
     ).push(MaterialPageRoute(builder: (context) => DictionaryWebview()));
   }
 
+  void _onTapAdd() {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => WordAddScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     if (authRepo.isLoggedIn) {
@@ -63,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("오미즈 구다사이"),
         actions: [
-          IconButton(onPressed: () {}, icon: FaIcon(FontAwesomeIcons.plus)),
+          IconButton(onPressed: _onTapAdd, icon: FaIcon(FontAwesomeIcons.plus)),
           IconButton(
             onPressed: _onTapDictionary,
             // icon: FaIcon(FontAwesomeIcons.language),

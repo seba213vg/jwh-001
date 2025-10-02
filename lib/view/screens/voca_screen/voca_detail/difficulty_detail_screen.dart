@@ -37,6 +37,29 @@ class DifficultyDetailScreen extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
+                          '기본 난이도 단어 / 표현',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 2.h),
+                  GestureDetector(
+                    onTap: () => _ontapCategory(context, 'easy2'),
+                    child: Container(
+                      height: 20.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.yellow, width: 2),
+                      ),
+                      child: Center(
+                        child: Text(
                           '쉬운 난이도 단어 / 표현',
                           style: TextStyle(
                             color: Colors.white,
@@ -57,35 +80,11 @@ class DifficultyDetailScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.yellow, width: 2),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '중간 난이도 단어 / 표현',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 2.h),
-
-                  GestureDetector(
-                    onTap: () => _ontapCategory(context, 'hard'),
-                    child: Container(
-                      height: 20.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: Colors.red, width: 2),
                       ),
                       child: Center(
                         child: Text(
-                          '높은 난이도 단어 / 표현',
+                          '어려운 난이도 단어 / 표현',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 22.sp,
