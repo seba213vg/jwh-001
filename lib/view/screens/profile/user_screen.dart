@@ -9,6 +9,7 @@ import 'package:jwh_01/view/screens/profile/profile_info.dart';
 import 'package:jwh_01/viewmodel/sign_up_vm.dart';
 import 'package:jwh_01/viewmodel/user_vm.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserScreen extends ConsumerStatefulWidget {
   const UserScreen({super.key});
@@ -22,11 +23,25 @@ class _UserScreenState extends ConsumerState<UserScreen> {
   bool _isTextsizeSliding = false;
   double _volume = 1.0;
   double _textsize = 1.0;
+  String url =
+      'https://doc-hosting.flycricket.io/hangeulro-baeuneun-ilboneo-omijeugudasai-privacy-policy/5bac7b1b-530f-4e8f-ad64-884f90d165ce/privacy';
 
   void _profileInfo() {
     Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (context) => ProfileInfo()));
+  }
+
+  Future<void> _launchURL() async {
+    final uri = Uri.parse(url);
+
+    if (!await launchUrl(uri)) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('링크를 열 수 없습니다'), backgroundColor: Colors.red),
+        );
+      }
+    }
   }
 
   @override
@@ -87,7 +102,10 @@ class _UserScreenState extends ConsumerState<UserScreen> {
             children: [
               GestureDetector(
                 onTap: _profileInfo,
-                child: Container(
+                child: ListTile(
+                  title: Text("사용자 정보", style: TextStyle(fontSize: 18.sp)),
+                ),
+                /*Container(
                   padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
                   height: 15.h,
                   width: 90.w,
@@ -102,10 +120,15 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                       SizedBox(width: 2.w),
                       CircleAvatar(
                         radius: 4.h,
+                        foregroundImage:
+                            data['photoUrl'] != 'undefined'
+                                ? NetworkImage(data['photoUrl'])
+                                : null,
                         backgroundColor:
                             Theme.of(context).colorScheme.secondaryContainer,
-                        child: Text("dd", style: TextStyle(fontSize: 30.sp)),
+                        child: Text('-', style: TextStyle(fontSize: 30.sp)),
                       ),
+                      
                       SizedBox(width: 6.w),
                       Text(
                         data['name'],
@@ -127,9 +150,9 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                       ),
                     ],
                   ),
-                ),
+                ),*/
               ),
-              SizedBox(height: 2.h),
+
               ListTile(
                 title: Text("알림받기", style: TextStyle(fontSize: 18.sp)),
                 trailing: CupertinoSwitch(
@@ -190,7 +213,10 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                 ),
               ),
 
-              ListTile(title: Text("앱 정보", style: TextStyle(fontSize: 18.sp))),
+              ListTile(
+                onTap: _launchURL,
+                title: Text("개인정보보호방침", style: TextStyle(fontSize: 18.sp)),
+              ),
               ListTile(
                 onTap: () {
                   Navigator.of(

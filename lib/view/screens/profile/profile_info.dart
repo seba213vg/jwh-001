@@ -20,6 +20,7 @@ class ProfileInfo extends ConsumerWidget {
                 body: Column(
                   children: [
                     SizedBox(height: 2.h),
+                    /*
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 1.h),
                       width: double.infinity,
@@ -33,15 +34,18 @@ class ProfileInfo extends ConsumerWidget {
                           SizedBox(height: 2.h),
                           CircleAvatar(
                             radius: 4.h,
+                            foregroundImage:
+                                data.photoUrl != 'undefined'
+                                    ? NetworkImage(data.photoUrl)
+                                    : null,
                             backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            child: Text(
-                              "dd",
-                              style: TextStyle(fontSize: 30.sp),
-                            ),
+                                Theme.of(
+                                  context,
+                                ).colorScheme.secondaryContainer,
+                            child: Text("-", style: TextStyle(fontSize: 30.sp)),
                           ),
                           SizedBox(height: 3.h),
-                          FilledButton.tonal(
+                          FilledButton(
                             onPressed: () {
                               // 버튼 클릭 시 동작
                             },
@@ -53,6 +57,7 @@ class ProfileInfo extends ConsumerWidget {
                       ),
                     ),
                     SizedBox(height: 2.h),
+                    */
                     ListTile(
                       title: Text(
                         "이름 : ${data.name}",
@@ -63,6 +68,7 @@ class ProfileInfo extends ConsumerWidget {
                       ),
                     ),
                     SizedBox(height: 1.h),
+
                     ListTile(
                       title: Text(
                         "메일주소 : ${data.email}",

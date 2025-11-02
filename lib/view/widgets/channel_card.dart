@@ -49,8 +49,14 @@ class ChannelCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("${data['channel']}", style: TextStyle(fontSize: 24.sp)),
+            Text(
+              "${data['channel']}",
+              style: TextStyle(fontSize: 22.sp),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
             SizedBox(height: 2.h),
             CircleAvatar(
               radius: 10.h,

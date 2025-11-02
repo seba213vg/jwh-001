@@ -14,20 +14,68 @@ class PlayScreen extends StatefulWidget {
 
 class _PlayScreenState extends State<PlayScreen> {
   late YoutubePlayerController _controller;
+  bool _isPlayerReady = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _controller = YoutubePlayerController(
-      initialVideoId: widget.data['youtube_id'] ?? '',
-      flags: YoutubePlayerFlags(autoPlay: false, mute: false),
-    );
+
+    // YouTube ID 검증 및 초기화
+    String? youtubeId = _extractVideoId(widget.data['youtube_id']);
+
+    if (youtubeId != null && youtubeId.isNotEmpty) {
+      _controller = YoutubePlayerController(
+        initialVideoId: youtubeId,
+        flags: const YoutubePlayerFlags(
+          autoPlay: true,
+          mute: false,
+          enableCaption: true,
+          captionLanguage: 'ko',
+          forceHD: false,
+          loop: false,
+        ),
+      );
+
+      // 플레이어 상태 리스너 추가
+      _controller.addListener(_onPlayerStateChange);
+    } else {
+      // 유효하지 않은 YouTube ID 처리
+      print('Invalid YouTube ID: ${widget.data['youtube_id']}');
+    }
+  }
+
+  void _onPlayerStateChange() {
+    if (_controller.value.isReady && !_isPlayerReady) {
+      setState(() {
+        _isPlayerReady = true;
+      });
+    }
+
+    if (_controller.value.hasError) {
+      print('YouTube Player Error: ${_controller.value.errorCode}');
+    }
+  }
+
+  // YouTube URL에서 Video ID 추출
+  String? _extractVideoId(dynamic input) {
+    if (input == null) return null;
+
+    String videoId = input.toString();
+
+    // 이미 Video ID인 경우
+    if (RegExp(r'^[a-zA-Z0-9_-]{11}$').hasMatch(videoId)) {
+      return videoId;
+    }
+
+    // YouTube URL에서 Video ID 추출
+    return YoutubePlayer.convertUrlToId(videoId);
   }
 
   @override
   void dispose() {
+    _controller.removeListener(_onPlayerStateChange);
     _controller.dispose();
+
     // 화면 방향을 기본값으로 복원
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -41,9 +89,38 @@ class _PlayScreenState extends State<PlayScreen> {
   @override
   Widget build(BuildContext context) {
     bool isShort = widget.data['portrait'] ?? false;
+
+    // YouTube ID가 없는 경우 에러 화면 표시
+    if (_extractVideoId(widget.data['youtube_id']) == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('재생 오류'),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, size: 64, color: Colors.red),
+              SizedBox(height: 16),
+              Text(
+                '유효하지 않은 동영상 ID입니다',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'YouTube ID: ${widget.data['youtube_id']}',
+                style: TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return YoutubePlayerBuilder(
       onEnterFullScreen: () {
-        // 전체화면 진입 시 시스템 UI 숨기기
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.landscapeLeft,
@@ -51,7 +128,6 @@ class _PlayScreenState extends State<PlayScreen> {
         ]);
       },
       onExitFullScreen: () {
-        // 전체화면 해제 시 시스템 UI 복원
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.portraitUp,
@@ -63,10 +139,19 @@ class _PlayScreenState extends State<PlayScreen> {
         showVideoProgressIndicator: true,
         aspectRatio: isShort ? 9 / 16 : 16 / 9,
         progressIndicatorColor: Colors.red,
-        progressColors: ProgressBarColors(
+        progressColors: const ProgressBarColors(
           playedColor: Colors.red,
           handleColor: Colors.redAccent,
         ),
+        onReady: () {
+          print('YouTube Player is ready');
+          setState(() {
+            _isPlayerReady = true;
+          });
+        },
+        onEnded: (metaData) {
+          print('Video ended');
+        },
       ),
       builder: (context, player) {
         return Scaffold(
@@ -80,12 +165,27 @@ class _PlayScreenState extends State<PlayScreen> {
                   ),
           body: Column(
             children: [
-              player,
+              // 플레이어 로딩 상태 표시
+              Stack(
+                children: [
+                  player,
+                  if (!_isPlayerReady)
+                    Container(
+                      height: isShort ? 56.h : 25.h,
+                      color: Colors.black,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
               if (!_controller.value.isFullScreen) ...[
                 SizedBox(height: 2.h),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -108,6 +208,7 @@ class _PlayScreenState extends State<PlayScreen> {
                               'No description available',
                           style: TextStyle(fontSize: 16.sp),
                         ),
+                        SizedBox(height: 4.h), // 하단 여백 추가
                       ],
                     ),
                   ),

@@ -16,19 +16,10 @@ class ContentsScreen extends StatefulWidget {
 
 class _ContentsScreenState extends State<ContentsScreen> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final wordQuery =
         FirebaseFirestore.instance.collection('contents').snapshots();
+
     return CustomScrollView(
       slivers: [
         SliverSafeArea(
@@ -41,30 +32,54 @@ class _ContentsScreenState extends State<ContentsScreen> {
                 pinned: true,
                 snap: true,
               ),
-              SliverToBoxAdapter(
-                child: StreamBuilder(
-                  stream: wordQuery,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    final docs = snapshot.data!.docs;
-                    if (docs.isEmpty) {
-                      return Center(child: Text('데이터가 없습니다.'));
-                    }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: docs.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot doc = snapshot.data!.docs[index];
-                        final String docId = doc.id;
-                        final data = docs[index].data();
-                        return ChannelCard(data: data, docId: docId);
-                      },
+              StreamBuilder(
+                stream: wordQuery,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(20.h),
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
                     );
-                  },
-                ),
+                  }
+
+                  final docs = snapshot.data!.docs;
+                  if (docs.isEmpty) {
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(20.h),
+                          child: Text('데이터가 없습니다.'),
+                        ),
+                      ),
+                    );
+                  }
+
+                  // ✅ SliverList 사용으로 변경
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      DocumentSnapshot doc = snapshot.data!.docs[index];
+                      final String docId = doc.id;
+                      final data = docs[index].data();
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          left: 3.w,
+                          right: 3.w,
+                          bottom:
+                              !(index == docs.length - 1)
+                                  ? 4.h
+                                  : 0, // 마지막 아이템만 하단 여백
+                        ),
+                        child: ChannelCard(data: data, docId: docId),
+                      );
+                    }, childCount: docs.length),
+                  );
+                },
               ),
+              SliverToBoxAdapter(child: SizedBox(height: 2.h)),
             ],
           ),
         ),
