@@ -70,7 +70,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '471207975685',
     projectId: 'jwh-001',
     storageBucket: 'jwh-001.firebasestorage.app',
-    iosBundleId: 'com.example.jwh01',
+    iosBundleId: 'com.omiz.jwh01',
   );
-
 }

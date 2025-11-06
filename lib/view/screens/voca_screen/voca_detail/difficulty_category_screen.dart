@@ -41,49 +41,51 @@ class _DifficultyCategoryScreenState extends State<DifficultyCategoryScreen> {
             .doc(widget.myCategory)
             .collection(widget.myCategory)
             .snapshots();
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        actionsPadding: EdgeInsets.only(right: 5.w),
-        title: Text(widget.myCategory),
-      ),
-      body: StreamBuilder(
-        stream: wordQuery,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final docs = snapshot.data!.docs;
-          if (docs.isEmpty) {
-            return Center(child: Text('데이터가 없습니다.'));
-          }
-          return Scrollbar(
-            controller: _scrollController,
-            thumbVisibility: true,
-            trackVisibility: true,
-            child: GridView.builder(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 1,
+          actionsPadding: EdgeInsets.only(right: 5.w),
+          title: Text(widget.myCategory),
+        ),
+        body: StreamBuilder(
+          stream: wordQuery,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            final docs = snapshot.data!.docs;
+            if (docs.isEmpty) {
+              return Center(child: Text('데이터가 없습니다.'));
+            }
+            return Scrollbar(
               controller: _scrollController,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 2.0,
-                crossAxisSpacing: 5.w,
-                mainAxisSpacing: 2.h,
-              ),
-              itemCount: docs.length,
-              itemBuilder: (context, index) {
-                DocumentSnapshot doc = snapshot.data!.docs[index];
-                final String docId = doc.id;
-                final data = docs[index].data();
+              thumbVisibility: true,
+              trackVisibility: true,
+              child: GridView.builder(
+                controller: _scrollController,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 2.0,
+                  crossAxisSpacing: 5.w,
+                  mainAxisSpacing: 2.h,
+                ),
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot doc = snapshot.data!.docs[index];
+                  final String docId = doc.id;
+                  final data = docs[index].data();
 
-                return CategoryVocaDifficulty(
-                  data: data,
-                  docId: docId,
-                  category: widget.myCategory,
-                );
-              },
-            ),
-          );
-        },
+                  return CategoryVocaDifficulty(
+                    data: data,
+                    docId: docId,
+                    category: widget.myCategory,
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

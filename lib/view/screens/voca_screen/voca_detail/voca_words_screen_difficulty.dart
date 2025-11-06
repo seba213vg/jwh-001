@@ -33,30 +33,32 @@ class VocaWordScreenforDifficulty extends ConsumerWidget {
             .doc(docId)
             .collection(docId)
             .snapshots();
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        actionsPadding: EdgeInsets.only(right: 5.w),
-        title: Text(title),
-      ),
-      body: StreamBuilder(
-        stream: wordQuery,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final docs = snapshot.data!.docs;
-          if (docs.isEmpty) {
-            return Center(child: Text('데이터가 없습니다.'));
-          }
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (context, index) {
-              final data = docs[index].data();
-              return WordTile(data: data);
-            },
-          );
-        },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 1,
+          actionsPadding: EdgeInsets.only(right: 5.w),
+          title: Text(title),
+        ),
+        body: StreamBuilder(
+          stream: wordQuery,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            final docs = snapshot.data!.docs;
+            if (docs.isEmpty) {
+              return Center(child: Text('데이터가 없습니다.'));
+            }
+            return ListView.builder(
+              itemCount: docs.length,
+              itemBuilder: (context, index) {
+                final data = docs[index].data();
+                return WordTile(data: data);
+              },
+            );
+          },
+        ),
       ),
     );
   }

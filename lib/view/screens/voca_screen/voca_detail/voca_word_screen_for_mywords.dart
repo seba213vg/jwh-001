@@ -25,56 +25,58 @@ class VocaWordScreenForMywords extends ConsumerWidget {
             .collection('added_words')
             .snapshots();
 
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        actionsPadding: EdgeInsets.only(right: 5.w),
-        title: Text(title),
-      ),
-      body: StreamBuilder(
-        stream: wordQuery,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final docs = snapshot.data!.docs;
-          if (docs.isEmpty) {
-            return Center(child: Text('데이터가 없습니다.'));
-          }
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (context, index) {
-              final data = docs[index].data();
-              return Dismissible(
-                key: Key(docs[index].id),
-                direction: DismissDirection.endToStart,
-                onDismissed: (direction) {
-                  FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(userId)
-                      .collection('added_words')
-                      .doc(docs[index].id)
-                      .delete();
-                  Fluttertoast.showToast(
-                    msg: "단어가 삭제되었어요",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    backgroundColor: Colors.black87,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  );
-                },
-                background: Container(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                  alignment: Alignment.centerRight,
-                  padding: EdgeInsets.only(right: 6.w),
-                  child: FaIcon(FontAwesomeIcons.trash, color: Colors.white),
-                ),
-                child: WordTile(data: data),
-              );
-            },
-          );
-        },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 1,
+          actionsPadding: EdgeInsets.only(right: 5.w),
+          title: Text(title),
+        ),
+        body: StreamBuilder(
+          stream: wordQuery,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            final docs = snapshot.data!.docs;
+            if (docs.isEmpty) {
+              return Center(child: Text('데이터가 없습니다.'));
+            }
+            return ListView.builder(
+              itemCount: docs.length,
+              itemBuilder: (context, index) {
+                final data = docs[index].data();
+                return Dismissible(
+                  key: Key(docs[index].id),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) {
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userId)
+                        .collection('added_words')
+                        .doc(docs[index].id)
+                        .delete();
+                    Fluttertoast.showToast(
+                      msg: "단어가 삭제되었어요",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.black87,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
+                  },
+                  background: Container(
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.only(right: 6.w),
+                    child: FaIcon(FontAwesomeIcons.trash, color: Colors.white),
+                  ),
+                  child: WordTile(data: data),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

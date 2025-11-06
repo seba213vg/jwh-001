@@ -189,22 +189,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Container(
                     height: 8.h,
-                    width: 98.w,
+                    width: double.infinity,
                     decoration: BoxDecoration(color: Colors.transparent),
                     child: Center(
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           FaIcon(
                             FontAwesomeIcons.check,
                             color: Colors.white,
-                            size: 24.sp,
+                            size: 22.sp,
                           ),
                           SizedBox(width: 2.w),
                           Text(
                             '즐겨찾기를 추가하면 여기에 표시됩니다',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18.sp,
+                              overflow: TextOverflow.ellipsis,
+
+                              fontSize: 16.sp,
                             ),
                           ),
                         ],

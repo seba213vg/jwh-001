@@ -55,165 +55,167 @@ class _WordAddScreenState extends ConsumerState<WordAddScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('단어 추가')),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 1.h),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(title: Text('단어 추가')),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 1.h),
 
-            Row(
-              children: [
-                Text(
-                  "단어 추가하기",
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w500,
+              Row(
+                children: [
+                  Text(
+                    "단어 추가하기",
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 1.h),
+              Form(
+                key: _formKey,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        style: TextStyle(fontSize: 18.sp),
+                        decoration: InputDecoration(
+                          labelText: "단어",
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return '단어를 입력해주세요';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _formData['title'] = value ?? '';
+                        },
+                      ),
+                      SizedBox(height: 3.h),
+                      TextFormField(
+                        style: TextStyle(fontSize: 18.sp),
+                        decoration: InputDecoration(
+                          labelText: "뜻",
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return '뜻을 입력해주세요';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _formData['mean'] = value?.trim() ?? '';
+                        },
+                      ),
+                      SizedBox(height: 3.h),
+                      TextFormField(
+                        style: TextStyle(fontSize: 18.sp),
+                        decoration: InputDecoration(
+                          labelText: "추가설명1",
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onSaved: (value) {
+                          _formData['description1'] = value?.trim() ?? '';
+                        },
+                      ),
+                      SizedBox(height: 3.h),
+                      TextFormField(
+                        style: TextStyle(fontSize: 18.sp),
+                        decoration: InputDecoration(
+                          labelText: "추가설명2",
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onSaved: (value) {
+                          _formData['description2'] = value?.trim() ?? '';
+                        },
+                      ),
+                      SizedBox(height: 3.h),
+                      TextFormField(
+                        style: TextStyle(fontSize: 18.sp),
+                        decoration: InputDecoration(
+                          labelText: "예문1",
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onSaved: (value) {
+                          _formData['exam1'] = value?.trim() ?? '';
+                        },
+                      ),
+                      SizedBox(height: 3.h),
+                      TextFormField(
+                        style: TextStyle(fontSize: 18.sp),
+                        decoration: InputDecoration(
+                          labelText: "예문1 뜻",
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onSaved: (value) {
+                          _formData['exam2'] = value?.trim() ?? '';
+                        },
+                      ),
+                      SizedBox(height: 3.h),
+                      TextFormField(
+                        style: TextStyle(fontSize: 18.sp),
+                        decoration: InputDecoration(
+                          labelText: "예문2",
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onSaved: (value) {
+                          _formData['exam3'] = value?.trim() ?? '';
+                        },
+                      ),
+                      SizedBox(height: 3.h),
+                      TextFormField(
+                        style: TextStyle(fontSize: 18.sp),
+                        decoration: InputDecoration(
+                          labelText: "예문2 뜻",
+                          border: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onSaved: (value) {
+                          _formData['exam4'] = value?.trim() ?? '';
+                        },
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
 
-            SizedBox(height: 1.h),
-            Form(
-              key: _formKey,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      style: TextStyle(fontSize: 18.sp),
-                      decoration: InputDecoration(
-                        labelText: "단어",
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return '단어를 입력해주세요';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _formData['title'] = value ?? '';
-                      },
-                    ),
-                    SizedBox(height: 3.h),
-                    TextFormField(
-                      style: TextStyle(fontSize: 18.sp),
-                      decoration: InputDecoration(
-                        labelText: "뜻",
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return '뜻을 입력해주세요';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _formData['mean'] = value?.trim() ?? '';
-                      },
-                    ),
-                    SizedBox(height: 3.h),
-                    TextFormField(
-                      style: TextStyle(fontSize: 18.sp),
-                      decoration: InputDecoration(
-                        labelText: "추가설명1",
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onSaved: (value) {
-                        _formData['description1'] = value?.trim() ?? '';
-                      },
-                    ),
-                    SizedBox(height: 3.h),
-                    TextFormField(
-                      style: TextStyle(fontSize: 18.sp),
-                      decoration: InputDecoration(
-                        labelText: "추가설명2",
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onSaved: (value) {
-                        _formData['description2'] = value?.trim() ?? '';
-                      },
-                    ),
-                    SizedBox(height: 3.h),
-                    TextFormField(
-                      style: TextStyle(fontSize: 18.sp),
-                      decoration: InputDecoration(
-                        labelText: "예문1",
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onSaved: (value) {
-                        _formData['exam1'] = value?.trim() ?? '';
-                      },
-                    ),
-                    SizedBox(height: 3.h),
-                    TextFormField(
-                      style: TextStyle(fontSize: 18.sp),
-                      decoration: InputDecoration(
-                        labelText: "예문1 뜻",
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onSaved: (value) {
-                        _formData['exam2'] = value?.trim() ?? '';
-                      },
-                    ),
-                    SizedBox(height: 3.h),
-                    TextFormField(
-                      style: TextStyle(fontSize: 18.sp),
-                      decoration: InputDecoration(
-                        labelText: "예문2",
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onSaved: (value) {
-                        _formData['exam3'] = value?.trim() ?? '';
-                      },
-                    ),
-                    SizedBox(height: 3.h),
-                    TextFormField(
-                      style: TextStyle(fontSize: 18.sp),
-                      decoration: InputDecoration(
-                        labelText: "예문2 뜻",
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onSaved: (value) {
-                        _formData['exam4'] = value?.trim() ?? '';
-                      },
-                    ),
-                  ],
+              SizedBox(height: 2.h),
+              GestureDetector(
+                onTap: () {
+                  _addWord();
+                },
+                child: Align(
+                  alignment: Alignment(0, 0),
+                  child: MyButton(text: "추가하기", isEnabled: true),
                 ),
               ),
-            ),
-
-            SizedBox(height: 2.h),
-            GestureDetector(
-              onTap: () {
-                _addWord();
-              },
-              child: Align(
-                alignment: Alignment(0, 0),
-                child: MyButton(text: "추가하기", isEnabled: true),
-              ),
-            ),
-            SizedBox(height: 2.h),
-          ],
+              SizedBox(height: 2.h),
+            ],
+          ),
         ),
       ),
     );

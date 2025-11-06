@@ -28,6 +28,7 @@ class DifficultyDetailScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () => _ontapCategory(context, 'easy'),
                     child: Container(
+                      margin: EdgeInsets.only(top: 2.h),
                       height: 20.h,
                       width: double.infinity,
                       decoration: BoxDecoration(

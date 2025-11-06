@@ -267,39 +267,44 @@ class _DictionaryWebviewState extends State<DictionaryWebview> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.translate),
-            SizedBox(width: 8),
-            Text('파파고 번역기'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.translate),
+              SizedBox(width: 8),
+              Text('파파고 번역기'),
+            ],
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () => controller?.reload(),
+            ),
+            IconButton(
+              icon: Icon(Icons.mic),
+              onPressed: _requestAllPermissions,
+            ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () => controller?.reload(),
-          ),
-          IconButton(icon: Icon(Icons.mic), onPressed: _requestAllPermissions),
-        ],
-      ),
-      body: Stack(
-        children: [
-          if (controller != null) WebViewWidget(controller: controller!),
-          if (isLoading)
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 2.h),
-                  Text('번역기를 불러오는 중...', style: TextStyle(fontSize: 16.sp)),
-                ],
+        body: Stack(
+          children: [
+            if (controller != null) WebViewWidget(controller: controller!),
+            if (isLoading)
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 2.h),
+                    Text('번역기를 불러오는 중...', style: TextStyle(fontSize: 16.sp)),
+                  ],
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

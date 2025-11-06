@@ -18,6 +18,8 @@ class tabHeader extends StatelessWidget {
         ),
         child: TabBar(
           indicatorSize: TabBarIndicatorSize.label,
+          indicatorColor: Theme.of(context).colorScheme.secondary,
+          labelColor: Theme.of(context).colorScheme.secondary,
 
           tabs: [
             Tab(

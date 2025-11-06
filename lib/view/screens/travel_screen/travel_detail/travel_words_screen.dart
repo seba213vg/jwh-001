@@ -40,36 +40,38 @@ class _TravelWordsScreenState extends ConsumerState<TravelWordsScreen> {
             .doc(widget.myCategory)
             .collection(widget.myCategory)
             .snapshots();
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        actionsPadding: EdgeInsets.only(right: 5.w),
-        title: Text(widget.myCategory),
-      ),
-      body: StreamBuilder(
-        stream: wordQuery,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final docs = snapshot.data!.docs;
-          if (docs.isEmpty) {
-            return Center(child: Text('데이터가 없습니다.'));
-          }
-          return Scrollbar(
-            controller: _scrollController,
-            thumbVisibility: true,
-            trackVisibility: true,
-            child: ListView.builder(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 1,
+          actionsPadding: EdgeInsets.only(right: 5.w),
+          title: Text(widget.myCategory),
+        ),
+        body: StreamBuilder(
+          stream: wordQuery,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            final docs = snapshot.data!.docs;
+            if (docs.isEmpty) {
+              return Center(child: Text('데이터가 없습니다.'));
+            }
+            return Scrollbar(
               controller: _scrollController,
-              itemCount: docs.length,
-              itemBuilder: (context, index) {
-                final data = docs[index].data();
-                return WordTile(data: data);
-              },
-            ),
-          );
-        },
+              thumbVisibility: true,
+              trackVisibility: true,
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  final data = docs[index].data();
+                  return WordTile(data: data);
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
