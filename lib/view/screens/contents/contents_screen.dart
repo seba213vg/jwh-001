@@ -27,7 +27,7 @@ class _ContentsScreenState extends State<ContentsScreen> {
           sliver: MultiSliver(
             children: [
               SliverAppBar(
-                title: Text("Contents"),
+                title: Text("콘텐츠"),
                 floating: true,
                 pinned: true,
                 snap: true,

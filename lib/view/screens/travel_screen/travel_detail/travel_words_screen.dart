@@ -11,7 +11,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 class TravelWordsScreen extends ConsumerStatefulWidget {
   final String myCategory;
-  const TravelWordsScreen(this.myCategory, {super.key});
+  final String myTabName;
+  const TravelWordsScreen(this.myCategory, this.myTabName, {super.key});
 
   @override
   ConsumerState<TravelWordsScreen> createState() => _TravelWordsScreenState();
@@ -45,7 +46,7 @@ class _TravelWordsScreenState extends ConsumerState<TravelWordsScreen> {
         appBar: AppBar(
           elevation: 1,
           actionsPadding: EdgeInsets.only(right: 5.w),
-          title: Text(widget.myCategory),
+          title: Text(widget.myTabName),
         ),
         body: StreamBuilder(
           stream: wordQuery,

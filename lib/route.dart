@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jwh_01/common/main_navigation.dart';
 import 'package:jwh_01/repository/auth_repo.dart';
 import 'package:jwh_01/view/screens/athentication/log_in.dart';
 import 'package:jwh_01/view/screens/athentication/sign_up.dart';
+import 'package:jwh_01/view/screens/travel_screen/travel_detail/travel_words_screen.dart';
 
 final myRouterProvider = Provider((ref) {
   // ref.watch(authStreamState);
@@ -57,24 +59,6 @@ final myRouterProvider = Provider((ref) {
         path: '/SignUpScreen',
         builder: (context, state) => SignUpScreen(),
       ),
-
-      // GoRoute(
-      //   name: ChatsScreen.routeName,
-      //   path: ChatsScreen.routeUrl,
-
-      //   builder: (context, state) => ChatsScreen(),
-      //   routes: [
-      //     GoRoute(
-      //       name: ChatDetailScreen.routeName,
-      //       path: ChatDetailScreen.routeUrl,
-
-      //       builder: (context, state) {
-      //         final chatId = state.params['chatId'];
-      //         return ChatDetailScreen(chatId: chatId!);
-      //       },
-      //     ),
-      //   ],
-      // ),
     ],
   );
 });

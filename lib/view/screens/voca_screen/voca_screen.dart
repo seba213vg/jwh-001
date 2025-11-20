@@ -15,10 +15,7 @@ class VocaScreen extends StatelessWidget {
         length: 2,
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(title: Text("voca / expression")),
-              tabHeader(),
-            ];
+            return [SliverAppBar(title: Text("탄고쵸-")), tabHeader()];
           },
           body: TabBarView(
             children: [ThemeDetailScreen(), DifficultyDetailScreen()],

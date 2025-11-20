@@ -10,6 +10,7 @@ class CategoryTravel extends StatelessWidget {
   final IconData myIcon;
   final Color myColor;
   final String category;
+  final String tab_name;
 
   const CategoryTravel({
     super.key,
@@ -17,11 +18,15 @@ class CategoryTravel extends StatelessWidget {
     required this.myIcon,
     required this.myColor,
     required this.category,
+    required this.tab_name,
   });
 
   void _onTabCategory(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => TravelWordsScreen(category)),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TravelWordsScreen(category, tab_name),
+      ),
     );
   }
 

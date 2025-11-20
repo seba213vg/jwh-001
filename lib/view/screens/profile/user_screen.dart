@@ -97,7 +97,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
         //       loading: () => Center(child: CircularProgressIndicator()),
         //       data: (data) {
         return Scaffold(
-          appBar: AppBar(title: Text("profile")),
+          appBar: AppBar(title: Text("프로피-루")),
           body: Column(
             children: [
               GestureDetector(

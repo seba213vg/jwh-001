@@ -57,7 +57,7 @@ class _WordAddScreenState extends ConsumerState<WordAddScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('단어 추가')),
+        appBar: AppBar(title: Text('탄고오 츠이카')),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +67,7 @@ class _WordAddScreenState extends ConsumerState<WordAddScreen> {
               Row(
                 children: [
                   Text(
-                    "단어 추가하기",
+                    "단어추가하기",
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w500,
@@ -76,6 +76,11 @@ class _WordAddScreenState extends ConsumerState<WordAddScreen> {
                 ],
               ),
 
+              SizedBox(height: 1.h),
+              Text(
+                "추가한 단어는 단어탭에서 확인할 수 있어요",
+                style: TextStyle(fontSize: 17.sp, color: Colors.grey[400]),
+              ),
               SizedBox(height: 1.h),
               Form(
                 key: _formKey,

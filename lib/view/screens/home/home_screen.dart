@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          "'-' 의 경우에는 길게 발음해주세요!",
+                          "'-'가 붙어있는 경우에는 길게 발음해주세요!",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 17.sp,
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          "받침 'ㄴ'과 'ㅇ' 발음은 사이에 어디쯤으로 발음해주세요!",
+                          "받침 'ㄴ'과 'ㅇ' 발음은 중간 어디쯤으로 발음해주세요!",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 17.sp,
@@ -152,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          "'ㄱ'과 'ㅋ' 발은은 사이에 어디쯤으로 발음해주세요!",
+                          "'ㄱ'과 'ㅋ' 발음은 중간 어디쯤으로 발음해주세요!",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 17.sp,
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         Text(
-                          "'ㅉ'과 'ㅊ' 발은은 사이에 어디쯤으로 발음해주세요!",
+                          "'ㅉ'과 'ㅊ' 발음은 중간 어디쯤으로 발음해주세요!",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 17.sp,
