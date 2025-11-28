@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jwh_01/model/auth_model.dart';
+import 'package:jwh_01/view/screens/profile/deleteUserAccount.dart';
 import 'package:jwh_01/view/screens/profile/profile_info.dart';
 import 'package:jwh_01/viewmodel/sign_up_vm.dart';
 import 'package:jwh_01/viewmodel/user_vm.dart';
@@ -23,13 +24,18 @@ class _UserScreenState extends ConsumerState<UserScreen> {
   bool _isTextsizeSliding = false;
   double _volume = 1.0;
   double _textsize = 1.0;
-  String url =
-      'https://doc-hosting.flycricket.io/hangeulro-baeuneun-ilboneo-omijeugudasai-privacy-policy/5bac7b1b-530f-4e8f-ad64-884f90d165ce/privacy';
+  String url = 'https://omiz124.blogspot.com/p/c-sdk.html';
 
   void _profileInfo() {
     Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (context) => ProfileInfo()));
+  }
+
+  void _deleteUserAccount() {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => DeleteUserAccount()));
   }
 
   Future<void> _launchURL() async {
@@ -60,7 +66,25 @@ class _UserScreenState extends ConsumerState<UserScreen> {
       stream:
           FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        // 2. 🟢 에러 확인
+        if (snapshot.hasError) {
+          // 에러 발생 시 로그아웃 처리 및 메시지 반환
+          ref.read(SignUpVmProvider.notifier).whenDeleteUserAccount();
+          // snapshot.error는 Null일 수 있으므로 안전하게 처리
+          return Text('데이터 로드 오류가 발생했습니다. 다시 로그인 해주세요: ${snapshot.error}');
+        }
+
+        // 3. 🚨 문서 존재 여부 확인 (탈퇴된 계정 처리)
+        // 이 시점에서 snapshot.data는 반드시 null이 아니며, DocumentSnapshot 타입이 보장됨.
+        if (!snapshot.data!.exists) {
+          // 회원 탈퇴 등으로 문서가 삭제되었을 때
+          ref.read(SignUpVmProvider.notifier).whenDeleteUserAccount();
+          return const Text('사용자 정보가 없습니다. 다시 로그인 해주세요.');
+        }
         var data = snapshot.data!.data() as Map<String, dynamic>;
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final rawVolume = data['volume'];
@@ -256,6 +280,50 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                                     ref
                                         .read(SignUpVmProvider.notifier)
                                         .logOut(),
+                            child: Text(
+                              "네",
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+              ListTile(
+                title: Text(
+                  "회원탈퇴",
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("회원탈퇴 하시곘습니까?"),
+                        content: const Text('탈퇴하시면 계정 내에 모든 정보가 삭제됩니다.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text(
+                              "아니요",
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              _deleteUserAccount();
+                            },
                             child: Text(
                               "네",
                               style: TextStyle(

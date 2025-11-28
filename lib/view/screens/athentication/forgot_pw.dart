@@ -17,7 +17,6 @@ class ForgotPassword extends ConsumerWidget {
     if (email.isNotEmpty) {
       ref.read(SignUpVmProvider.notifier).sendPasswordResetEmail(email);
 
-      // SnackBar 대신 Toast 사용
       Fluttertoast.showToast(
         msg: "비밀번호 재설정 이메일이 전송되었습니다.",
         toastLength: Toast.LENGTH_LONG,
@@ -28,7 +27,6 @@ class ForgotPassword extends ConsumerWidget {
         fontSize: 16.0,
       );
     } else {
-      // SnackBar 대신 Toast 사용
       Fluttertoast.showToast(
         msg: "이메일을 입력해주세요.",
         toastLength: Toast.LENGTH_SHORT,

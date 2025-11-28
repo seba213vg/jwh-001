@@ -45,6 +45,10 @@ class AuthRepository {
   Future<void> logOut() async {
     await _auth.signOut();
   }
+
+  Future<void> deleteAccount() async {
+    await _auth.currentUser?.delete();
+  }
 }
 
 final authStreamState = StreamProvider((ref) {

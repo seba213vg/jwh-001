@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jwh_01/view/screens/contents/contents_screen.dart';
@@ -32,6 +33,40 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     });
   }
 
+  Future<bool> _onWillPop(BuildContext context) async {
+    final shouldClose = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('앱 종료'),
+            content: const Text('앱을 종료하시겠습니까?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(
+                  '취소',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(
+                  '확인',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+    );
+    return shouldClose ?? false;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -39,75 +74,87 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ot = MediaQuery.of(context).orientation;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          HomeScreen(),
-          TravelScreen(),
-          VocaScreen(),
-          ContentsScreen(),
-          UserScreen(),
-        ],
-      ),
-
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.black,
-        height: 9.h,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    // final ot = MediaQuery.of(context).orientation;
+    return PopScope(
+      canPop: false, // 실제로 pop해도 될지 미리 false로 설정
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (!didPop) {
+          // pop 동작이 아직 일어나지 않았을 때 다이얼로그 띄움
+          final shouldExit = await _onWillPop(context);
+          if (shouldExit && mounted) {
+            SystemNavigator.pop(); // 앱 종료
+          }
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: IndexedStack(
+          index: _selectedIndex,
           children: [
-            NavWidget(
-              text: "home",
-              label: "홈",
-              icon: FontAwesomeIcons.house,
-              selectedIcon: FontAwesomeIcons.house,
-              isSelected: _selectedIndex == 0,
-              onTap: () => _isSelected(0),
-              selectedIndex: _selectedIndex,
-            ),
-            NavWidget(
-              text: "travel",
-              label: "여행",
-              icon: FontAwesomeIcons.plane,
-              selectedIcon: FontAwesomeIcons.plane,
-              isSelected: _selectedIndex == 1,
-              onTap: () => _isSelected(1),
-              selectedIndex: _selectedIndex,
-            ),
-
-            NavWidget(
-              text: "voca",
-              label: "단어",
-              icon: FontAwesomeIcons.book,
-              selectedIcon: FontAwesomeIcons.book,
-
-              isSelected: _selectedIndex == 2,
-              onTap: () => _isSelected(2),
-              selectedIndex: _selectedIndex,
-            ),
-            NavWidget(
-              text: "contents",
-              label: "콘텐츠",
-              icon: FontAwesomeIcons.video,
-              selectedIcon: FontAwesomeIcons.video,
-
-              isSelected: _selectedIndex == 3,
-              onTap: () => _isSelected(3),
-              selectedIndex: _selectedIndex,
-            ),
-            NavWidget(
-              text: "Profile",
-              label: "프로필",
-              icon: FontAwesomeIcons.user,
-              selectedIcon: FontAwesomeIcons.solidUser,
-              isSelected: _selectedIndex == 4,
-              onTap: () => _isSelected(4),
-              selectedIndex: _selectedIndex,
-            ),
+            HomeScreen(),
+            TravelScreen(),
+            VocaScreen(),
+            ContentsScreen(),
+            UserScreen(),
           ],
+        ),
+
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.black,
+          height: 9.h,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              NavWidget(
+                text: "home",
+                label: "홈",
+                icon: FontAwesomeIcons.house,
+                selectedIcon: FontAwesomeIcons.house,
+                isSelected: _selectedIndex == 0,
+                onTap: () => _isSelected(0),
+                selectedIndex: _selectedIndex,
+              ),
+              NavWidget(
+                text: "travel",
+                label: "여행",
+                icon: FontAwesomeIcons.plane,
+                selectedIcon: FontAwesomeIcons.plane,
+                isSelected: _selectedIndex == 1,
+                onTap: () => _isSelected(1),
+                selectedIndex: _selectedIndex,
+              ),
+
+              NavWidget(
+                text: "voca",
+                label: "단어",
+                icon: FontAwesomeIcons.book,
+                selectedIcon: FontAwesomeIcons.book,
+
+                isSelected: _selectedIndex == 2,
+                onTap: () => _isSelected(2),
+                selectedIndex: _selectedIndex,
+              ),
+              NavWidget(
+                text: "contents",
+                label: "콘텐츠",
+                icon: FontAwesomeIcons.video,
+                selectedIcon: FontAwesomeIcons.video,
+
+                isSelected: _selectedIndex == 3,
+                onTap: () => _isSelected(3),
+                selectedIndex: _selectedIndex,
+              ),
+              NavWidget(
+                text: "Profile",
+                label: "프로필",
+                icon: FontAwesomeIcons.user,
+                selectedIcon: FontAwesomeIcons.solidUser,
+                isSelected: _selectedIndex == 4,
+                onTap: () => _isSelected(4),
+                selectedIndex: _selectedIndex,
+              ),
+            ],
+          ),
         ),
       ),
     );

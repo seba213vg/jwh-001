@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          " ex) 스미마센/스미미셍",
+                          " ex) 스미마센/스미마셍",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 17.sp,

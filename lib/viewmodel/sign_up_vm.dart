@@ -6,10 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jwh_01/model/auth_model.dart';
 import 'package:jwh_01/repository/auth_repo.dart';
+import 'package:jwh_01/repository/user_repo.dart';
+import 'package:jwh_01/route.dart';
 import 'package:jwh_01/viewmodel/user_vm.dart';
 
 class SignUpViewModel extends StateNotifier<AuthState> {
   final AuthRepository _authRepo;
+  final UserRepository _userRepo = UserRepository();
   final Ref ref;
 
   SignUpViewModel(this._authRepo, this.ref) : super(AuthState.idle());
@@ -35,6 +38,10 @@ class SignUpViewModel extends StateNotifier<AuthState> {
   logOut() {
     _authRepo.logOut();
     state = AuthState.idle();
+  }
+
+  whenDeleteUserAccount() {
+    _authRepo.logOut();
   }
 
   Future<void> sendPasswordResetEmail(String email) async {

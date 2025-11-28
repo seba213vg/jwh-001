@@ -207,7 +207,7 @@ class WordTile extends ConsumerWidget {
               ), // 내부 여백
               textStyle: GoogleFonts.gamjaFlower(
                 fontWeight: FontWeight.bold,
-                fontSize: 12 * textsize,
+                fontSize: 15.sp,
               ),
               side: BorderSide(color: Colors.black, width: 2), // 테두리
             ),
@@ -241,7 +241,7 @@ class WordTile extends ConsumerWidget {
               ), // 내부 여백
               textStyle: GoogleFonts.gamjaFlower(
                 fontWeight: FontWeight.bold,
-                fontSize: 12 * textsize,
+                fontSize: 15.sp,
               ),
               side: BorderSide(color: Colors.black, width: 2), // 테두리
             ),
