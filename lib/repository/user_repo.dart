@@ -11,7 +11,7 @@ import 'package:jwh_01/model/user_model.dart';
 class UserRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<void> createUser(UserModel user) async {
     await _db.collection('users').doc(user.uid).set(user.toJson());
@@ -34,6 +34,11 @@ class UserRepository {
       print('함수 호출 실패: ${e.message}');
     }
     return false;
+  }
+
+  Future<void> updateToken(String token) async {
+    final user = _auth.currentUser;
+    await _db.collection("users").doc(user!.uid).update({"token": token});
   }
 
   Future<Map<String, dynamic>?> findProfile(String uid) async {

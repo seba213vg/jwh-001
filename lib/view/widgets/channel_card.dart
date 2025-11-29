@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jwh_01/common/route_helper.dart';
 import 'package:jwh_01/view/screens/contents/playlist_in_channel.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -11,11 +12,9 @@ class ChannelCard extends StatelessWidget {
   const ChannelCard({super.key, required this.data, required this.docId});
 
   void _onTapChannel(BuildContext context) {
-    // Navigate to the playlist in channel screen
-    Navigator.push(
+    Navigator.of(
       context,
-      MaterialPageRoute(builder: (context) => PlaylistInChannel(docId: docId)),
-    );
+    ).push(createSlideRoute(PlaylistInChannel(docId: docId)));
   }
 
   // 랜덤 색상 가져오기

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jwh_01/common/my_button.dart';
+import 'package:jwh_01/common/route_helper.dart';
 import 'package:jwh_01/model/auth_model.dart';
 import 'package:jwh_01/view/screens/athentication/forgot_pw.dart';
 import 'package:jwh_01/viewmodel/sign_up_vm.dart';
@@ -52,9 +53,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
   }
 
   void _resetPassword() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => ForgotPassword()));
+    Navigator.of(context).push(createSlideRoute(ForgotPassword()));
   }
 
   void _changeObsure() {

@@ -17,12 +17,34 @@ class DifficultyCategoryScreen extends StatefulWidget {
 
 class _DifficultyCategoryScreenState extends State<DifficultyCategoryScreen> {
   late ScrollController _scrollController;
+  late final Stream<QuerySnapshot<Map<String, dynamic>>> wordQuery;
+  bool _isLoading = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _scrollController = ScrollController();
+    _startLoadingAfterAnimation();
+    wordQuery =
+        FirebaseFirestore.instance
+            .collection('words')
+            .doc('difficulty')
+            .collection('difficulty')
+            .doc(widget.myCategory)
+            .collection(widget.myCategory)
+            .snapshots();
+  }
+
+  Future<void> _startLoadingAfterAnimation() async {
+    // 🚀 애니메이션 지속 시간만큼 기다립니다.
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
   }
 
   @override
@@ -33,14 +55,6 @@ class _DifficultyCategoryScreenState extends State<DifficultyCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final wordQuery =
-        FirebaseFirestore.instance
-            .collection('words')
-            .doc('difficulty')
-            .collection('difficulty')
-            .doc(widget.myCategory)
-            .collection(widget.myCategory)
-            .snapshots();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -51,7 +65,7 @@ class _DifficultyCategoryScreenState extends State<DifficultyCategoryScreen> {
         body: StreamBuilder(
           stream: wordQuery,
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+            if (!snapshot.hasData || !_isLoading) {
               return Center(child: CircularProgressIndicator());
             }
             final docs = snapshot.data!.docs;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jwh_01/common/flex_color_scheme.dart';
+import 'package:jwh_01/common/notifications.dart';
 import 'package:jwh_01/firebase_options.dart';
 import 'package:jwh_01/route.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -12,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseAuth.instance.signOut();
+  // await FirebaseAuth.instance.signOut();
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -39,6 +40,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
+        ref.watch(notificationsProvider);
         return MaterialApp.router(
           routerConfig: ref.watch(myRouterProvider),
           title: 'project_JWH',

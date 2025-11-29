@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jwh_01/common/route_helper.dart';
 import 'package:jwh_01/view/screens/voca_screen/voca_detail/voca_word_screen.dart';
 import 'package:jwh_01/view/screens/voca_screen/voca_detail/voca_word_screen_for_mywords.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -10,12 +11,9 @@ class CategoryVocaForMywords extends StatelessWidget {
   const CategoryVocaForMywords({super.key, required this.title});
 
   void _onTapCategory(BuildContext context) {
-    // Navigate to the word details screen with the document ID
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => VocaWordScreenForMywords(title: title),
-      ),
-    );
+    Navigator.of(
+      context,
+    ).push(createSlideRoute(VocaWordScreenForMywords(title: title)));
   }
 
   @override

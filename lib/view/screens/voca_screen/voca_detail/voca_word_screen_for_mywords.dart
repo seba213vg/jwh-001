@@ -11,31 +11,59 @@ import 'package:jwh_01/repository/auth_repo.dart';
 import 'package:jwh_01/view/widgets/word_tile.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class VocaWordScreenForMywords extends ConsumerWidget {
+class VocaWordScreenForMywords extends ConsumerStatefulWidget {
   final String title;
   const VocaWordScreenForMywords({required this.title, super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<VocaWordScreenForMywords> createState() =>
+      _VocaWordScreenForMywordsState();
+}
+
+class _VocaWordScreenForMywordsState
+    extends ConsumerState<VocaWordScreenForMywords> {
+  late final Stream<QuerySnapshot<Map<String, dynamic>>> wordQuery;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startLoadingAfterAnimation();
     final String userId = ref.read(authRepoProvider).user?.uid ?? '';
-    final wordQuery =
+    wordQuery =
         FirebaseFirestore.instance
             .collection('users')
             .doc(userId)
             .collection('added_words')
             .snapshots();
+  }
+
+  Future<void> _startLoadingAfterAnimation() async {
+    // 🚀 애니메이션 지속 시간만큼 기다립니다.
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final String userId = ref.read(authRepoProvider).user?.uid ?? '';
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
           actionsPadding: EdgeInsets.only(right: 5.w),
-          title: Text(title),
+          title: Text(widget.title),
         ),
         body: StreamBuilder(
           stream: wordQuery,
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+            if (!snapshot.hasData || !_isLoading) {
               return Center(child: CircularProgressIndicator());
             }
             final docs = snapshot.data!.docs;

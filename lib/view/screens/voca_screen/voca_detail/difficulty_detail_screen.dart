@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jwh_01/common/route_helper.dart';
 import 'package:jwh_01/view/screens/voca_screen/voca_detail/difficulty_category_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -8,11 +9,9 @@ class DifficultyDetailScreen extends StatelessWidget {
   const DifficultyDetailScreen({super.key});
 
   _ontapCategory(BuildContext context, String myCategory) => {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => DifficultyCategoryScreen(myCategory: myCategory),
-      ),
-    ),
+    Navigator.of(
+      context,
+    ).push(createSlideRoute(DifficultyCategoryScreen(myCategory: myCategory))),
   };
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jwh_01/common/route_helper.dart';
 import 'package:jwh_01/view/screens/voca_screen/voca_detail/voca_word_screen.dart';
 import 'package:jwh_01/view/screens/voca_screen/voca_detail/voca_words_screen_difficulty.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -17,15 +18,14 @@ class CategoryVocaDifficulty extends StatelessWidget {
   });
 
   void _onTapCategory(BuildContext context) {
-    // Navigate to the word details screen with the document ID
+    //
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder:
-            (context) => VocaWordScreenforDifficulty(
-              docId: docId,
-              title: data['title'] ?? 'none',
-              category: category,
-            ),
+      createSlideRoute(
+        VocaWordScreenforDifficulty(
+          docId: docId,
+          title: data['title'] ?? 'none',
+          category: category,
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jwh_01/common/route_helper.dart';
 import 'package:jwh_01/view/screens/travel_screen/travel_detail/travel_words_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -22,12 +23,9 @@ class CategoryTravel extends StatelessWidget {
   });
 
   void _onTabCategory(BuildContext context) {
-    Navigator.push(
+    Navigator.of(
       context,
-      MaterialPageRoute(
-        builder: (context) => TravelWordsScreen(category, tab_name),
-      ),
-    );
+    ).push(createSlideRoute(TravelWordsScreen(category, tab_name)));
   }
 
   @override

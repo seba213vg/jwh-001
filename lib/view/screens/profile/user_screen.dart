@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jwh_01/common/route_helper.dart';
 import 'package:jwh_01/model/auth_model.dart';
 import 'package:jwh_01/view/screens/profile/deleteUserAccount.dart';
 import 'package:jwh_01/view/screens/profile/profile_info.dart';
@@ -27,15 +28,11 @@ class _UserScreenState extends ConsumerState<UserScreen> {
   String url = 'https://omiz124.blogspot.com/p/c-sdk.html';
 
   void _profileInfo() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => ProfileInfo()));
+    Navigator.of(context).push(createSlideRoute(const ProfileInfo()));
   }
 
   void _deleteUserAccount() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => DeleteUserAccount()));
+    Navigator.of(context).push(createSlideRoute(const DeleteUserAccount()));
   }
 
   Future<void> _launchURL() async {
@@ -243,9 +240,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
               ),
               ListTile(
                 onTap: () {
-                  Navigator.of(
-                    context,
-                  ).push(MaterialPageRoute(builder: (_) => LicensePage()));
+                  Navigator.of(context).push(createSlideRoute(LicensePage()));
                 },
                 title: Text("오픈소스 라이선스", style: TextStyle(fontSize: 18.sp)),
               ),

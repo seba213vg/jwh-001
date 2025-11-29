@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jwh_01/common/route_helper.dart';
 import 'package:jwh_01/repository/auth_repo.dart';
 import 'package:jwh_01/view/screens/home/dictionary_webview.dart';
 import 'package:jwh_01/view/screens/home/word_add_screen.dart';
@@ -41,15 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onTapDictionary() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => DictionaryWebview()));
+    Navigator.of(context).push(createSlideRoute(DictionaryWebview()));
   }
 
   void _onTapAdd() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => WordAddScreen()));
+    Navigator.of(context).push(createSlideRoute(WordAddScreen()));
   }
 
   @override
