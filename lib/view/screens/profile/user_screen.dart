@@ -26,6 +26,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
   double _volume = 1.0;
   double _textsize = 1.0;
   String url = 'https://omiz124.blogspot.com/p/c-sdk.html';
+  String _previousUid = ''; // 추가: 이전 uid 저장할 변수
 
   void _profileInfo() {
     Navigator.of(context).push(createSlideRoute(const ProfileInfo()));
@@ -51,14 +52,15 @@ class _UserScreenState extends ConsumerState<UserScreen> {
   Widget build(BuildContext context) {
     ref.listen(SignUpVmProvider, (previous, next) {
       if (next.status == AuthStatus.idle) {
-        context.go('/SignUpScreen');
+        context.go('/LogInScreen');
       }
     });
     final user = ref.watch(UserVmProvider).value;
-    if (user == null) {
+    if (user == null || user.uid.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
     final uid = user.uid;
+
     return StreamBuilder<DocumentSnapshot>(
       stream:
           FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
@@ -78,12 +80,23 @@ class _UserScreenState extends ConsumerState<UserScreen> {
         // 3. 🚨 문서 존재 여부 확인 (탈퇴된 계정 처리)
         // 이 시점에서 snapshot.data는 반드시 null이 아니며, DocumentSnapshot 타입이 보장됨.
         if (!snapshot.data!.exists) {
-          // 회원 탈퇴 등으로 문서가 삭제되었을 때
           ref.read(SignUpVmProvider.notifier).whenDeleteUserAccount();
           return const Text('사용자 정보가 없습니다. 다시 로그인 해주세요.');
         }
+
         var data = snapshot.data!.data() as Map<String, dynamic>;
+
+        // 🟢 개선: uid가 바뀌었는지 확인하고 상태 초기화
         WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (_previousUid != uid) {
+            // 새로운 사용자로 로그인했으면 상태 초기화
+            setState(() {
+              _volume = 1.0;
+              _textsize = 1.0;
+              _previousUid = uid;
+            });
+          }
+
           final rawVolume = data['volume'];
           final newVolume =
               (rawVolume is int)
@@ -110,13 +123,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
             });
           }
         });
-        // return
-        // ref
-        //     .watch(UserVmProvider)
-        //     .when(
-        //       error: (error, stackTrace) => Text("something went wrong $error"),
-        //       loading: () => Center(child: CircularProgressIndicator()),
-        //       data: (data) {
+
         return Scaffold(
           appBar: AppBar(title: Text("프로피-루")),
           body: Column(

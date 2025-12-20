@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -17,7 +18,13 @@ class _DictionaryWebviewState extends State<DictionaryWebview> {
   @override
   void initState() {
     super.initState();
+    _startLoadingAfterAnimation();
     _initializeWebView();
+  }
+
+  Future<void> _startLoadingAfterAnimation() async {
+    // 🚀 애니메이션 지속 시간만큼 기다립니다.
+    await Future.delayed(const Duration(milliseconds: 300));
   }
 
   Future<void> _initializeWebView() async {
@@ -113,9 +120,15 @@ class _DictionaryWebviewState extends State<DictionaryWebview> {
       if (finalMicStatus.isGranted && finalSpeechStatus.isGranted) {
         print('모든 권한이 부여되었습니다.');
         if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('마이크 권한이 허용되었습니다.')));
+          Fluttertoast.showToast(
+            msg: "마이크 권한이 허용되었습니다",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
         }
       }
     } catch (e) {

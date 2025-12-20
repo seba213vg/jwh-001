@@ -18,7 +18,7 @@ final myRouterProvider = Provider((ref) {
       if (!isLoggedin) {
         if (state.fullPath != '/SignUpScreen' &&
             state.fullPath != '/LogInScreen') {
-          return '/SignUpScreen';
+          return '/LogInScreen';
         }
       }
       return null;

@@ -11,21 +11,26 @@ import 'package:jwh_01/viewmodel/sign_up_vm.dart';
 
 class UserViewModel extends AsyncNotifier<UserModel> {
   late UserRepository _userRepo;
-  late final AuthRepository _authRepo;
+  late AuthRepository _authRepo;
 
   @override
   FutureOr<UserModel> build() async {
     _userRepo = ref.read(userRepoProvider);
     _authRepo = ref.read(authRepoProvider);
+    
+    // Watch state to rebuild on auth changes
+    final authState = ref.watch(authStreamState);
+    final user = authState.valueOrNull;
 
-    if (_authRepo.isLoggedIn) {
-      final userId = _authRepo.user!.uid;
+    if (user != null) {
+      final userId = user.uid;
       final profile = await _userRepo.findProfile(userId);
       if (profile != null) {
         return UserModel.fromJson(profile);
       }
     }
-    return UserModel.empty();
+    // Return empty user model when not logged in
+    return UserModel.empty(); 
   }
 
   Future<void> CreateUser(UserCredential credential) async {
@@ -93,13 +98,18 @@ class UserViewModel extends AsyncNotifier<UserModel> {
 
   Future<void> updateUserProfile(Map<String, dynamic> data) async {
     //state = AsyncValue.loading();
-    final userId = _authRepo.user!.uid;
+    final user = _authRepo.user;
+    if (user == null) return;
+    
+    final userId = user.uid;
     await _userRepo.updateUser(userId, data);
+    
+    // Refresh to update local state
     final updatedUser = await _userRepo.findProfile(userId);
     if (updatedUser != null) {
-      state = AsyncValue.data(UserModel.fromJson(updatedUser));
+      state = AsyncValue.data(UserModel.fromJson(updatedUser)); // Optimistic update
     } else {
-      state = AsyncValue.error(
+       state = AsyncValue.error(
         'Failed to update user profile',
         StackTrace.current,
       );

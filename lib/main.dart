@@ -40,7 +40,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
-        ref.watch(notificationsProvider);
+        //ref.watch(notificationsProvider);
         return MaterialApp.router(
           routerConfig: ref.watch(myRouterProvider),
           title: 'project_JWH',

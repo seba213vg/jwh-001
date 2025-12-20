@@ -1,4 +1,4 @@
-package com.omiz.jwh_01
+package com.omiz.jwh
 
 import io.flutter.embedding.android.FlutterActivity
 

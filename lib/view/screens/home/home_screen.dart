@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jwh_01/common/route_helper.dart';
 import 'package:jwh_01/repository/auth_repo.dart';
 import 'package:jwh_01/view/screens/home/dictionary_webview.dart';
+import 'package:jwh_01/view/screens/home/search_screen.dart';
 import 'package:jwh_01/view/screens/home/word_add_screen.dart';
 import 'package:jwh_01/view/widgets/word_tile.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -49,6 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.of(context).push(createSlideRoute(WordAddScreen()));
   }
 
+  void _onTapSearch() {
+    Navigator.of(context).push(createSlideRoute(SearchScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     if (authRepo.isLoggedIn) {
@@ -67,6 +72,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("오미즈 구다사이"),
         actions: [
+          IconButton(
+            onPressed: _onTapSearch,
+            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
+          ),
           IconButton(onPressed: _onTapAdd, icon: FaIcon(FontAwesomeIcons.plus)),
           IconButton(
             onPressed: _onTapDictionary,
