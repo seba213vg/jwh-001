@@ -50,86 +50,94 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: _searchController,
-          decoration: InputDecoration(
-            labelText: "단어 찾기",
-            labelStyle: TextStyle(fontSize: 18.sp),
-            border: OutlineInputBorder(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: "단어 찾기",
+                labelStyle: TextStyle(fontSize: 18.sp),
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  searchWord = value;
+                });
+              },
+            ),
+            centerTitle: true,
           ),
-          onChanged: (value) {
-            setState(() {
-              searchWord = value;
-            });
-          },
-        ),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-        child:
-            searchWord.isEmpty
-                ? Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 2.h),
-                    Text(
-                      "단어 찾기 팁!",
-                      style: TextStyle(
-                        fontSize: 22.sp,
-                        color: Colors.grey[500],
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      "궁금한 단어가 나오지 않으면 비슷한 단어를 검색해보세요",
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        color: Colors.grey[500],
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      "ex) '뛰다'가 나오지 않는다면, '달리다'로 검색해보세요!",
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        color: Colors.grey[500],
-                      ),
-                    ),
-                  ],
-                )
-                : StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  // ✅ searchWord 변경 시 Stream 새로 생성
-                  stream: searchWordsStream(searchWord),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            child:
+                searchWord.isEmpty
+                    ? Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 2.h),
+                        Text(
+                          "단어 찾기 팁!",
+                          style: TextStyle(
+                            fontSize: 22.sp,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                        SizedBox(height: 2.h),
+                        Text(
+                          "궁금한 단어가 나오지 않으면 비슷한 단어를 검색해보세요",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                        SizedBox(height: 2.h),
+                        Text(
+                          "ex) '뛰다'가 나오지 않는다면, '달리다'로 검색해보세요!",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                      ],
+                    )
+                    : StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      // ✅ searchWord 변경 시 Stream 새로 생성
+                      stream: searchWordsStream(searchWord),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
 
-                    if (snapshot.hasError) {
-                      return Center(child: Text('오류 발생: ${snapshot.error}'));
-                    }
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text('오류 발생: ${snapshot.error}'),
+                          );
+                        }
 
-                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return Center(child: Text('검색 결과가 없습니다'));
-                    }
+                        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                          return Center(child: Text('검색 결과가 없습니다'));
+                        }
 
-                    final docs = snapshot.data!.docs;
+                        final docs = snapshot.data!.docs;
 
-                    // ✅ ListView.builder로 결과 표시
-                    return ListView.builder(
-                      controller: _scrollController,
-                      itemCount: docs.length,
-                      itemBuilder: (context, index) {
-                        final data = docs[index].data();
-                        return WordTile(data: data);
+                        // ✅ ListView.builder로 결과 표시
+                        return ListView.builder(
+                          controller: _scrollController,
+                          itemCount: docs.length,
+                          itemBuilder: (context, index) {
+                            final data = docs[index].data();
+                            return WordTile(data: data);
+                          },
+                        );
                       },
-                    );
-                  },
-                ),
+                    ),
+          ),
+        ),
       ),
     );
   }

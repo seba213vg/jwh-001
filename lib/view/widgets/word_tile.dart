@@ -60,7 +60,7 @@ class _WordTileState extends ConsumerState<WordTile> {
     try {
       await _audioPlayer.stop();
       final myAudioUrl = await getAudioUrl(audio!);
-      final volume = ref.watch(UserVmProvider).value?.volume ?? 1.0;
+      final volume = ref.read(UserVmProvider).value?.volume ?? 1.0;
 
       await _audioPlayer.setVolume(volume);
       await _audioPlayer.play(UrlSource(myAudioUrl));
@@ -100,6 +100,8 @@ class _WordTileState extends ConsumerState<WordTile> {
   @override
   Widget build(BuildContext context) {
     final textsize = ref.watch(UserVmProvider).value?.textsize ?? 1.0;
+    int defaultTitleSize = 16;
+    int defaultDescriptionSize = 14;
 
     return ExpansionTile(
       iconColor: Colors.white,
@@ -107,11 +109,17 @@ class _WordTileState extends ConsumerState<WordTile> {
       childrenPadding: EdgeInsets.only(bottom: 40),
       title: Text(
         widget.data['title'] ?? '',
-        style: TextStyle(fontSize: 18 * textsize, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          fontSize: defaultTitleSize * textsize,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       subtitle: Text(
         widget.data['mean'] ?? '',
-        style: TextStyle(fontSize: 18 * textsize, fontWeight: FontWeight.w300),
+        style: TextStyle(
+          fontSize: defaultTitleSize * textsize,
+          fontWeight: FontWeight.w300,
+        ),
       ),
       trailing:
           _isValidAudioUrl(widget.data['url1'])
@@ -128,7 +136,7 @@ class _WordTileState extends ConsumerState<WordTile> {
             contentPadding: EdgeInsets.symmetric(horizontal: 6.w),
             title: Text(
               '${widget.data['description1']}',
-              style: TextStyle(fontSize: 15 * textsize),
+              style: TextStyle(fontSize: defaultDescriptionSize * textsize),
             ),
           ),
         if (widget.data['description2'].toString().isNotEmpty &&
@@ -137,7 +145,7 @@ class _WordTileState extends ConsumerState<WordTile> {
             contentPadding: EdgeInsets.symmetric(horizontal: 6.w),
             title: Text(
               '${widget.data['description2'] ?? ''}',
-              style: TextStyle(fontSize: 15 * textsize),
+              style: TextStyle(fontSize: defaultDescriptionSize * textsize),
             ),
           ),
         if (widget.data['description3'].toString().isNotEmpty &&
@@ -146,7 +154,7 @@ class _WordTileState extends ConsumerState<WordTile> {
             contentPadding: EdgeInsets.symmetric(horizontal: 6.w),
             title: Text(
               '${widget.data['description3'] ?? ''}',
-              style: TextStyle(fontSize: 15 * textsize),
+              style: TextStyle(fontSize: defaultDescriptionSize * textsize),
             ),
           ),
         if (widget.data['exam1'].toString().isNotEmpty &&
@@ -155,11 +163,11 @@ class _WordTileState extends ConsumerState<WordTile> {
             contentPadding: EdgeInsets.symmetric(horizontal: 6.w),
             title: Text(
               '${widget.data['exam1'] ?? ''}',
-              style: TextStyle(fontSize: 15 * textsize),
+              style: TextStyle(fontSize: defaultDescriptionSize * textsize),
             ),
             subtitle: Text(
               '${widget.data['exam2'] ?? ''}',
-              style: TextStyle(fontSize: 15 * textsize),
+              style: TextStyle(fontSize: defaultDescriptionSize * textsize),
             ),
             trailing:
                 _isValidAudioUrl(widget.data['url2'])
@@ -175,11 +183,11 @@ class _WordTileState extends ConsumerState<WordTile> {
             contentPadding: EdgeInsets.symmetric(horizontal: 6.w),
             title: Text(
               '${widget.data['exam3'] ?? ''}',
-              style: TextStyle(fontSize: 15 * textsize),
+              style: TextStyle(fontSize: defaultDescriptionSize * textsize),
             ),
             subtitle: Text(
               '${widget.data['exam4'] ?? ''}',
-              style: TextStyle(fontSize: 15 * textsize),
+              style: TextStyle(fontSize: defaultDescriptionSize * textsize),
             ),
             trailing:
                 _isValidAudioUrl(widget.data['url3'])
@@ -195,11 +203,11 @@ class _WordTileState extends ConsumerState<WordTile> {
             contentPadding: EdgeInsets.symmetric(horizontal: 6.w),
             title: Text(
               '${widget.data['exam5'] ?? ''}',
-              style: TextStyle(fontSize: 15 * textsize),
+              style: TextStyle(fontSize: defaultDescriptionSize * textsize),
             ),
             subtitle: Text(
               '${widget.data['exam6'] ?? ''}',
-              style: TextStyle(fontSize: 15 * textsize),
+              style: TextStyle(fontSize: defaultDescriptionSize * textsize),
             ),
             trailing:
                 _isValidAudioUrl(widget.data['url4'])

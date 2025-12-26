@@ -39,9 +39,9 @@ class UserModel {
       link = json['link'],
       uid = json['uid'],
       photoUrl = json['photoUrl'],
-      volume = json['volume'],
-      textsize = json['textsize'],
-      notification = json['notification'];
+      volume = (json['volume'] as num?)?.toDouble() ?? 1.0,
+      textsize = (json['textsize'] as num?)?.toDouble() ?? 1.0,
+      notification = json['notification'] ?? true;
 
   Map<String, dynamic> toJson() {
     return {

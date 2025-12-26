@@ -13,26 +13,16 @@ import 'package:jwh_01/viewmodel/user_vm.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class UserScreen extends ConsumerStatefulWidget {
-  const UserScreen({super.key});
+class UserScreen extends ConsumerWidget {
+  UserScreen({super.key});
 
-  @override
-  ConsumerState<UserScreen> createState() => _UserScreenState();
-}
-
-class _UserScreenState extends ConsumerState<UserScreen> {
-  bool _isVolumeSliding = false;
-  bool _isTextsizeSliding = false;
-  double _volume = 1.0;
-  double _textsize = 1.0;
   String url = 'https://omiz124.blogspot.com/p/c-sdk.html';
-  String _previousUid = ''; // 추가: 이전 uid 저장할 변수
 
-  void _profileInfo() {
+  void _profileInfo(BuildContext context) {
     Navigator.of(context).push(createSlideRoute(const ProfileInfo()));
   }
 
-  void _deleteUserAccount() {
+  void _deleteUserAccount(BuildContext context) {
     Navigator.of(context).push(createSlideRoute(const DeleteUserAccount()));
   }
 
@@ -40,310 +30,256 @@ class _UserScreenState extends ConsumerState<UserScreen> {
     final uri = Uri.parse(url);
 
     if (!await launchUrl(uri)) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('링크를 열 수 없습니다'), backgroundColor: Colors.red),
-        );
-      }
+      // URL 오류 처리 필요시 context 전달받아 처리
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(SignUpVmProvider, (previous, next) {
       if (next.status == AuthStatus.idle) {
         context.go('/LogInScreen');
       }
     });
-    final user = ref.watch(UserVmProvider).value;
-    if (user == null || user.uid.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    final uid = user.uid;
 
-    return StreamBuilder<DocumentSnapshot>(
-      stream:
-          FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+    final userAsync = ref.watch(UserVmProvider);
+
+    return userAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) {
+        // 에러 발생 시 로그아웃 처리
+        ref.read(SignUpVmProvider.notifier).whenDeleteUserAccount();
+        return Center(child: Text('데이터 로드 오류: $error'));
+      },
+      data: (user) {
+        if (user.uid.isEmpty) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        // 2. 🟢 에러 확인
-        if (snapshot.hasError) {
-          // 에러 발생 시 로그아웃 처리 및 메시지 반환
-          ref.read(SignUpVmProvider.notifier).whenDeleteUserAccount();
-          // snapshot.error는 Null일 수 있으므로 안전하게 처리
-          return Text('데이터 로드 오류가 발생했습니다. 다시 로그인 해주세요: ${snapshot.error}');
-        }
-
-        // 3. 🚨 문서 존재 여부 확인 (탈퇴된 계정 처리)
-        // 이 시점에서 snapshot.data는 반드시 null이 아니며, DocumentSnapshot 타입이 보장됨.
-        if (!snapshot.data!.exists) {
-          ref.read(SignUpVmProvider.notifier).whenDeleteUserAccount();
-          return const Text('사용자 정보가 없습니다. 다시 로그인 해주세요.');
-        }
-
-        var data = snapshot.data!.data() as Map<String, dynamic>;
-
-        // 🟢 개선: uid가 바뀌었는지 확인하고 상태 초기화
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (_previousUid != uid) {
-            // 새로운 사용자로 로그인했으면 상태 초기화
-            setState(() {
-              _volume = 1.0;
-              _textsize = 1.0;
-              _previousUid = uid;
-            });
-          }
-
-          final rawVolume = data['volume'];
-          final newVolume =
-              (rawVolume is int)
-                  ? rawVolume.toDouble()
-                  : (rawVolume is double)
-                  ? rawVolume
-                  : 1.0;
-          if (!_isVolumeSliding && _volume != newVolume) {
-            setState(() {
-              _volume = newVolume;
-            });
-          }
-
-          final rawSize = data['textsize'];
-          final newSize =
-              (rawSize is int)
-                  ? rawSize.toDouble()
-                  : (rawSize is double)
-                  ? rawSize
-                  : 1.0;
-          if (!_isTextsizeSliding && _textsize != newSize) {
-            setState(() {
-              _textsize = newSize;
-            });
-          }
-        });
-
         return Scaffold(
-          appBar: AppBar(title: Text("프로피-루")),
-          body: Column(
-            children: [
-              GestureDetector(
-                onTap: _profileInfo,
-                child: ListTile(
-                  title: Text("사용자 정보", style: TextStyle(fontSize: 18.sp)),
+          appBar: AppBar(title: const Text("프로피-루")),
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () => _profileInfo(context),
+                  child: Text("사용자 정보", style: TextStyle(fontSize: 18.sp)),
                 ),
-                /*Container(
-                  padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
-                  height: 15.h,
-                  width: 90.w,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(width: 2.w),
-                      CircleAvatar(
-                        radius: 4.h,
-                        foregroundImage:
-                            data['photoUrl'] != 'undefined'
-                                ? NetworkImage(data['photoUrl'])
-                                : null,
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondaryContainer,
-                        child: Text('-', style: TextStyle(fontSize: 30.sp)),
-                      ),
-                      
-                      SizedBox(width: 6.w),
-                      Text(
-                        data['name'],
-                        style: TextStyle(
-                          fontSize: 23.sp,
-                          fontWeight: FontWeight.w500,
+                SizedBox(height: 2.h),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("알림받기", style: TextStyle(fontSize: 18.sp)),
+                        CupertinoSwitch(
+                          value: user.notification,
+                          onChanged: (value) {
+                            ref.read(UserVmProvider.notifier).updateUserProfile(
+                              {"notification": value},
+                            );
+                          },
                         ),
-                      ),
-                      SizedBox(width: 36.w),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.chevronRight,
-                            size: 18.sp,
-                            color: Theme.of(context).colorScheme.primaryFixed,
-                          ),
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 2.h),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("글자크기", style: TextStyle(fontSize: 18.sp)),
+                        SizedBox(width: 3.w),
+                        SegmentedButton<textsize>(
+                          segments: <ButtonSegment<textsize>>[
+                            ButtonSegment(
+                              value: textsize.small,
+                              label: Text(
+                                '작게',
+                                style: TextStyle(fontSize: 16.sp),
+                              ),
+                              icon: const Icon(
+                                Icons.text_fields_sharp,
+                                size: 12,
+                              ),
+                            ),
+                            ButtonSegment(
+                              value: textsize.medium,
+                              label: Text(
+                                '보통',
+                                style: TextStyle(fontSize: 16.sp),
+                              ),
+                              icon: const Icon(
+                                Icons.text_fields_sharp,
+                                size: 16,
+                              ),
+                            ),
+                            ButtonSegment(
+                              value: textsize.large,
+                              label: Text(
+                                '크게',
+                                style: TextStyle(fontSize: 16.sp),
+                              ),
+                              icon: const Icon(
+                                Icons.text_fields_sharp,
+                                size: 20,
+                              ),
+                            ),
+                          ],
+                          selected: <textsize>{_getTextsizeEnum(user.textsize)},
+                          onSelectionChanged: (Set<textsize> newSelection) {
+                            final newTextsize = _getTextsizeValue(
+                              newSelection.first,
+                            );
+                            ref.read(UserVmProvider.notifier).updateUserProfile(
+                              {'textsize': newTextsize},
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 2.h),
+                    Text(
+                      "단어카드의 글자 크기를 조절합니다",
+                      style: TextStyle(fontSize: 18 * user.textsize),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 2.h),
+                GestureDetector(
+                  onTap: _launchURL,
+                  child: Text("개인정보보호방침", style: TextStyle(fontSize: 18.sp)),
+                ),
+                SizedBox(height: 2.h),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(createSlideRoute(LicensePage()));
+                  },
+                  child: Text("오픈소스 라이선스", style: TextStyle(fontSize: 18.sp)),
+                ),
+                SizedBox(height: 2.h),
+                ListTile(
+                  title: Text(
+                    "로그아웃",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                   ),
-                ),*/
-              ),
-
-              ListTile(
-                title: Text("알림받기", style: TextStyle(fontSize: 18.sp)),
-                trailing: CupertinoSwitch(
-                  value: ref.watch(UserVmProvider).value!.notification,
-                  onChanged: (value) {
-                    ref.read(UserVmProvider.notifier).updateUserProfile({
-                      "notification": value,
-                    });
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("로그아웃 하시곘습니까?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text(
+                                "아니요",
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed:
+                                  () =>
+                                      ref
+                                          .read(SignUpVmProvider.notifier)
+                                          .logOut(),
+                              child: Text(
+                                "네",
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                 ),
-              ),
-
-              ListTile(
-                title: Text("볼륨조절", style: TextStyle(fontSize: 18.sp)),
-                subtitle: Slider(
-                  value: _volume,
-                  min: 0.0,
-                  max: 1.0,
-                  divisions: 100,
-                  onChangeStart: (_) {
-                    _isVolumeSliding = true;
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      _volume = value;
-                    });
-                  },
-                  onChangeEnd: (value) async {
-                    _isVolumeSliding = false;
-                    await ref.read(UserVmProvider.notifier).updateUserProfile({
-                      'volume': value,
-                    });
-                  },
-                ),
-              ),
-
-              ListTile(
-                title: Text("글자크기 조절", style: TextStyle(fontSize: 18.sp)),
-                subtitle: Slider(
-                  value: _textsize,
-                  min: 1.0,
-                  max: 2.0,
-                  divisions: 100,
-                  onChangeStart: (_) {
-                    _isTextsizeSliding = true;
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      _textsize = value;
-                    });
-                  },
-                  onChangeEnd: (value) async {
-                    _isTextsizeSliding = false;
-                    await ref.read(UserVmProvider.notifier).updateUserProfile({
-                      'textsize': value,
-                    });
-                  },
-                ),
-              ),
-
-              ListTile(
-                onTap: _launchURL,
-                title: Text("개인정보보호방침", style: TextStyle(fontSize: 18.sp)),
-              ),
-              ListTile(
-                onTap: () {
-                  Navigator.of(context).push(createSlideRoute(LicensePage()));
-                },
-                title: Text("오픈소스 라이선스", style: TextStyle(fontSize: 18.sp)),
-              ),
-              ListTile(
-                title: Text(
-                  "로그아웃",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    color: Theme.of(context).colorScheme.error,
+                ListTile(
+                  title: Text(
+                    "회원탈퇴",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                   ),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("회원탈퇴 하시곘습니까?"),
+                          content: const Text('탈퇴하시면 계정 내에 모든 정보가 삭제됩니다.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text(
+                                "아니요",
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                _deleteUserAccount(context);
+                              },
+                              child: Text(
+                                "네",
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                 ),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("로그아웃 하시곘습니까?"),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: Text(
-                              "아니요",
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed:
-                                () =>
-                                    ref
-                                        .read(SignUpVmProvider.notifier)
-                                        .logOut(),
-                            child: Text(
-                              "네",
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-              ListTile(
-                title: Text(
-                  "회원탈퇴",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                ),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("회원탈퇴 하시곘습니까?"),
-                        content: const Text('탈퇴하시면 계정 내에 모든 정보가 삭제됩니다.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: Text(
-                              "아니요",
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              _deleteUserAccount();
-                            },
-                            child: Text(
-                              "네",
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
     );
   }
+
+  textsize _getTextsizeEnum(double value) {
+    if (value < 1.15) return textsize.small;
+    if (value < 1.45) return textsize.medium;
+    return textsize.large;
+  }
+
+  double _getTextsizeValue(textsize size) {
+    switch (size) {
+      case textsize.small:
+        return 1.0;
+      case textsize.medium:
+        return 1.3;
+      case textsize.large:
+        return 1.6;
+    }
+  }
 }
+
+enum textsize { small, medium, large }

@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 /// Use same major flex_color_scheme package version. If you use a
 /// lower minor version, some properties may not be supported.
 /// In that case, remove them after copying this theme to your
-/// app or upgrade the package to version 8.2.0.
+/// app or upgrade the package to version 8.4.0.
 ///
 /// Use it in a [MaterialApp] like this:
 ///
@@ -28,17 +28,11 @@ abstract final class AppTheme {
       interactionEffects: true,
       tintedDisabledControls: true,
       useM2StyleDividerInM3: true,
-      elevatedButtonSchemeColor: SchemeColor.surfaceTint,
+      segmentedButtonSchemeColor: SchemeColor.primary,
+      sliderTrackHeight: 1,
       inputDecoratorIsFilled: true,
       inputDecoratorBorderType: FlexInputBorderType.outline,
-      listTileTileSchemeColor: SchemeColor.onSecondary,
-      listTileSelectedTileSchemeColor: SchemeColor.errorContainer,
       alignedDropdown: true,
-      bottomNavigationBarSelectedLabelSchemeColor:
-          SchemeColor.onPrimaryContainer,
-      bottomNavigationBarSelectedIconSchemeColor:
-          SchemeColor.onPrimaryContainer,
-      bottomNavigationBarElevation: 3.0,
       navigationRailUseIndicator: true,
     ),
     // Direct ThemeData properties.
@@ -57,17 +51,11 @@ abstract final class AppTheme {
       tintedDisabledControls: true,
       blendOnColors: true,
       useM2StyleDividerInM3: true,
-      elevatedButtonSchemeColor: SchemeColor.surfaceTint,
+      segmentedButtonSchemeColor: SchemeColor.primary,
+      sliderTrackHeight: 1,
       inputDecoratorIsFilled: true,
       inputDecoratorBorderType: FlexInputBorderType.outline,
-      listTileTileSchemeColor: SchemeColor.onSecondary,
-      listTileSelectedTileSchemeColor: SchemeColor.errorContainer,
       alignedDropdown: true,
-      bottomNavigationBarSelectedLabelSchemeColor:
-          SchemeColor.onPrimaryContainer,
-      bottomNavigationBarSelectedIconSchemeColor:
-          SchemeColor.onPrimaryContainer,
-      bottomNavigationBarElevation: 3.0,
       navigationRailUseIndicator: true,
     ),
     // Direct ThemeData properties.
