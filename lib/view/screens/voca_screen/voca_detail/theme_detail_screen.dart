@@ -49,7 +49,12 @@ class _ThemeDetailScreenState extends ConsumerState<ThemeDetailScreen> {
           }
           final docs = snapshot.data!.docs;
           if (docs.isEmpty) {
-            return Center(child: Text('데이터가 없습니다.'));
+            return Center(
+              child: Text(
+                '데이터가 없습니다.',
+                style: TextStyle(fontSize: 20.sp, color: Colors.grey[400]),
+              ),
+            );
           }
 
           return StreamBuilder(
@@ -57,30 +62,33 @@ class _ThemeDetailScreenState extends ConsumerState<ThemeDetailScreen> {
             builder: (context, myWordsSnapshot) {
               // MyWords 데이터 상태 확인
               bool hasMyWordsData = false;
-              List<DocumentSnapshot> myWordsDocs = [];
 
               if (myWordsSnapshot.hasData &&
                   myWordsSnapshot.data!.docs.isNotEmpty) {
                 hasMyWordsData = true;
-                myWordsDocs = myWordsSnapshot.data!.docs;
               }
 
-              return Column(
-                children: [
-                  hasMyWordsData
-                      ? CategoryVocaForMywords(title: '내가 추가한 단어 모음')
-                      : SizedBox.shrink(),
-
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: docs.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot doc = snapshot.data!.docs[index];
+              return CustomScrollView(
+                slivers: [
+                  // 내가 추가한 단어 섹션
+                  if (hasMyWordsData)
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.w),
+                        child: CategoryVocaForMywords(title: '내가 추가한 단어'),
+                      ),
+                    ),
+                  // 테마 단어 리스트
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.w),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        DocumentSnapshot doc = docs[index];
                         final String docId = doc.id;
-                        final data = docs[index].data();
+                        final data = doc.data() as Map<String, dynamic>;
 
                         return CategoryVoca(data: data, docId: docId);
-                      },
+                      }, childCount: docs.length),
                     ),
                   ),
                 ],

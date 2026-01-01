@@ -46,7 +46,7 @@ class _VocaWordScreenforDifficultyState
             .doc(widget.category)
             .collection(widget.category)
             .doc(widget.docId)
-            .collection(widget.docId)
+            .collection('details')
             .snapshots();
   }
 
@@ -84,7 +84,12 @@ class _VocaWordScreenforDifficultyState
             }
             final docs = snapshot.data!.docs;
             if (docs.isEmpty) {
-              return Center(child: Text('데이터가 없습니다.'));
+              return Center(
+                child: Text(
+                  '데이터가 없습니다.',
+                  style: TextStyle(fontSize: 20.sp, color: Colors.grey[400]),
+                ),
+              );
             }
             return Scrollbar(
               controller: _scrollController,

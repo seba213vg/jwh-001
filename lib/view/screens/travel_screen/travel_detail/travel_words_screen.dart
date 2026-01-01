@@ -32,12 +32,11 @@ class _TravelWordsScreenState extends ConsumerState<TravelWordsScreen> {
         FirebaseFirestore.instance
             .collection('travel')
             .doc(widget.myCategory)
-            .collection(widget.myCategory)
+            .collection('details')
             .snapshots();
   }
 
   Future<void> _startLoadingAfterAnimation() async {
-    // 🚀 애니메이션 지속 시간만큼 기다립니다.
     await Future.delayed(const Duration(milliseconds: 300));
 
     if (mounted) {
@@ -70,7 +69,12 @@ class _TravelWordsScreenState extends ConsumerState<TravelWordsScreen> {
             }
             final docs = snapshot.data!.docs;
             if (docs.isEmpty) {
-              return Center(child: Text('데이터가 없습니다.'));
+              return Center(
+                child: Text(
+                  '데이터가 없습니다',
+                  style: TextStyle(fontSize: 20.sp, color: Colors.grey[400]),
+                ),
+              );
             }
             return Scrollbar(
               controller: _scrollController,

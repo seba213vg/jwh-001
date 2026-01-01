@@ -178,6 +178,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               SizedBox(height: 5.h),
                               TextFormField(
                                 style: TextStyle(fontSize: 18.sp),
+                                keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   labelText: "이메일",
                                   border: UnderlineInputBorder(

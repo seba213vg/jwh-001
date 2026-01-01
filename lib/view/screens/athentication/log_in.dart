@@ -174,6 +174,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                             children: [
                               TextFormField(
                                 style: TextStyle(fontSize: 18.sp),
+                                keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   labelText: "Email",
                                   border: UnderlineInputBorder(

@@ -67,7 +67,25 @@ class ForgotPassword extends ConsumerWidget {
                         "이메일 주소를 입력하면 비밀번호 재설정 링크를 보내드립니다.",
                         style: TextStyle(
                           fontSize: 16.sp,
-                          color: Colors.grey[600],
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+
+                      Text(
+                        "이메일이 오지 않으면 스팸함을 확인해보세요!",
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+
+                      Text(
+                        "비밀번호 재설정시에 비밀번호에 대,소문자, 숫자를 모두 사용해주세요!",
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: Colors.grey[400],
                         ),
                       ),
 
