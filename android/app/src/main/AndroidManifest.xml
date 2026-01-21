@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 
     <application
         android:label="오미즈구다사이"
@@ -16,6 +17,11 @@
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">
         
+        <!-- Google AdMob 앱 ID -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6646677685325645~6818416481"/>
+
         <!-- WebView 미디어 설정 -->
         <meta-data
             android:name="android.webkit.WebView.MediaPlaybackRequiresUserGesture"

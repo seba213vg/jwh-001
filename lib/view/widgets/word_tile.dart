@@ -12,9 +12,9 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 class WordTile extends ConsumerStatefulWidget {
   final Map<String, dynamic> data;
-  String? docId;
+  final String? docId;
 
-  WordTile({super.key, required this.data, this.docId});
+  const WordTile({super.key, required this.data, this.docId});
 
   @override
   ConsumerState<WordTile> createState() => _WordTileState();

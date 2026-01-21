@@ -14,9 +14,9 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserScreen extends ConsumerWidget {
-  UserScreen({super.key});
+  const UserScreen({super.key});
 
-  String url = 'https://omiz124.blogspot.com/p/c-sdk.html';
+  final String url = 'https://omiz124.blogspot.com/p/c-sdk.html';
 
   void _profileInfo(BuildContext context) {
     Navigator.of(context).push(createSlideRoute(const ProfileInfo()));

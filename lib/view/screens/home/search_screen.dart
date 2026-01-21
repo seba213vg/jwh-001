@@ -16,6 +16,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   String searchWord = "";
   FirebaseFirestore db = FirebaseFirestore.instance;
   late TextEditingController _searchController;
+  bool searchKoreanMode = true;
 
   @override
   void initState() {
@@ -34,11 +35,24 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     String endText = '$searchText\uf8ff';
 
-    return db
-        .collectionGroup('details')
-        .where('title', isGreaterThanOrEqualTo: searchText)
-        .where('title', isLessThan: endText)
-        .snapshots();
+    if (searchKoreanMode) {
+      return db
+          .collectionGroup('details')
+          .where('searchKeywords', arrayContains: searchText)
+          .snapshots();
+
+      // db
+      //     .collectionGroup('details')
+      //     .where('title', isGreaterThanOrEqualTo: searchText)
+      //     .where('title', isLessThan: endText)
+      //     .snapshots();
+    } else {
+      return db
+          .collectionGroup('details')
+          .where('mean', isGreaterThanOrEqualTo: searchText)
+          .where('mean', isLessThan: endText)
+          .snapshots();
+    }
   }
 
   @override
@@ -58,9 +72,41 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             title: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                labelText: "단어 찾기",
+                labelText: searchKoreanMode ? "한국어 찾기" : "일본어 찾기",
                 labelStyle: TextStyle(fontSize: 18.sp),
                 border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child:
+                        searchKoreanMode
+                            ? Text(
+                              "한",
+                              key: ValueKey(1),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.sp,
+                                color: Colors.blue,
+                              ),
+                            )
+                            : Text(
+                              "あ",
+                              key: ValueKey(2),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.sp,
+                                color: Colors.orange,
+                              ),
+                            ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      searchKoreanMode = !searchKoreanMode;
+                      _searchController.clear();
+                      searchWord = ""; // 검색 초기화
+                    });
+                  },
+                ),
               ),
               onChanged: (value) {
                 setState(() {

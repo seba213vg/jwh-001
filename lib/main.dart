@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jwh_01/common/flex_color_scheme.dart';
-import 'package:jwh_01/common/notifications.dart';
 import 'package:jwh_01/firebase_options.dart';
 import 'package:jwh_01/route.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -28,6 +30,8 @@ void main() async {
       systemNavigationBarIconBrightness: Brightness.light,
     ),
   );
+
+  unawaited(MobileAds.instance.initialize());
 
   runApp(ProviderScope(child: MyApp()));
 }
